@@ -8,10 +8,12 @@
 
 ```
 classflow/
-├── server.js          ← Express HTTPS server (port 8443)
-├── public/
-│   └── index.html     ← Frontend แอปหลัก
-├── start.sh           ← Script รัน server อัตโนมัติ
+├── server.js          ← Express server (port 3000)
+├── index.html         ← หน้าครู
+├── login.html         ← หน้าเข้าสู่ระบบ
+├── student.html       ← หน้านักเรียน
+├── data/
+│   └── db.json        ← ฐานข้อมูล (ไฟล์ JSON)
 ├── package.json
 └── README.md
 ```
@@ -19,22 +21,6 @@ classflow/
 ---
 
 ## 🚀 วิธีรัน
-
-### วิธีที่ 1 — ใช้ script อัตโนมัติ (แนะนำ)
-
-```bash
-chmod +x start.sh
-./start.sh
-```
-
-สคริปต์จะทำทุกอย่างเอง:
-1. ติดตั้ง npm packages
-2. สร้าง SSL certificate สำหรับ localhost
-3. เปิด HTTPS server ที่ `http://localhost:3000`
-
----
-
-### วิธีที่ 2 — รันแยก (manual)
 
 #### ขั้นตอนที่ 1: ติดตั้ง dependencies
 
