@@ -1,0 +1,16 @@
+{
+  "name": "classflow",
+  "version": "1.0.0",
+  "description": "Educational platform with Kanban homework board",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["education", "kanban", "classroom"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClassFlow — นักเรียน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.0.0/dist/tabler-icons.min.css">
+<style>
+:root {
+  --bg:#F4F3ED; --surface:#fff; --border:#E7E5DC; --text:#1A1A18; --muted:#6B6A65; --hint:#A8A7A2;
+  --teal:#1D9E75; --teal-lt:#E1F5EE; --teal-md:#9FE1CB;
+  --amber:#BA7517; --amber-lt:#FAEEDA;
+  --red:#993C1D; --red-lt:#FAECE7;
+  --blue:#185FA5; --blue-lt:#E6F1FB; --blue-dk:#134a82;
+  --purple:#534AB7; --purple-lt:#EEEDFE;
+  --r:12px; --rs:8px;
+  --sh:0 1px 2px rgba(26,26,24,.04), 0 4px 12px rgba(26,26,24,.05);
+  --sh-md:0 2px 4px rgba(26,26,24,.05), 0 8px 24px rgba(26,26,24,.07);
+  --grad-blue:linear-gradient(135deg,#2477c8 0%,#185FA5 100%);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Sarabun',sans-serif;background:
+  radial-gradient(1200px 600px at 80% -10%, rgba(24,95,165,.05), transparent 60%),
+  radial-gradient(900px 500px at -10% 110%, rgba(29,158,117,.04), transparent 55%),
+  var(--bg);
+  background-attachment:fixed;
+  color:var(--text);min-height:100vh;display:flex;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;letter-spacing:.005em}
+
+/* ── Sidebar ── */
+.sidebar{width:220px;flex-shrink:0;background:rgba(255,255,255,.82);backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:10}
+.sb-header{padding:16px;border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:38px;height:38px;border-radius:11px;background:var(--grad-blue);display:flex;align-items:center;
+  justify-content:center;box-shadow:0 4px 12px rgba(24,95,165,.32)}
+.logo-icon i{color:#fff;font-size:20px}
+.logo-name{font-size:15px;font-weight:600;letter-spacing:-.01em}.logo-sub{font-size:11px;color:var(--muted)}
+
+.stu-profile{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.stu-av{width:36px;height:36px;border-radius:50%;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.av-t{background:#9FE1CB;color:#085041}.av-p{background:#CECBF6;color:#26215C}
+.av-c{background:#F5C4B3;color:#4A1B0C}.av-a{background:#FAC775;color:#412402}.av-b{background:#B5D4F4;color:#042C53}
+.stu-profile-name{font-size:13px;font-weight:500;flex:1}
+.stu-profile-class{font-size:11px;color:var(--muted)}
+
+.nav{padding:10px 8px;flex:1;overflow-y:auto}
+.nav-sec{font-size:10px;color:var(--hint);letter-spacing:.06em;text-transform:uppercase;padding:8px 10px 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:var(--rs);
+  font-size:14px;color:var(--muted);cursor:pointer;transition:background .18s,color .18s,box-shadow .18s;margin-bottom:2px;border:none;background:none;width:100%;font-family:'Sarabun',sans-serif;text-align:left;position:relative}
+.nav-item:hover{background:var(--bg);color:var(--text)}
+.nav-item.active{background:var(--blue-lt);color:var(--blue-dk);font-weight:600;box-shadow:inset 0 0 0 1px rgba(24,95,165,.12)}
+.nav-item.active::before{content:'';position:absolute;left:-8px;top:50%;transform:translateY(-50%);
+  width:3px;height:18px;border-radius:0 3px 3px 0;background:var(--blue)}
+.nav-item i{font-size:18px;flex-shrink:0}
+
+.sb-footer{padding:12px;border-top:1px solid var(--border)}
+.btn-logout{display:flex;align-items:center;gap:8px;width:100%;padding:9px 12px;border-radius:var(--rs);
+  font-size:13px;color:var(--muted);cursor:pointer;border:none;background:none;font-family:'Sarabun',sans-serif;transition:background .12s}
+.btn-logout:hover{background:var(--red-lt);color:var(--red)}
+
+/* ── Main ── */
+.main{margin-left:220px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:rgba(255,255,255,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);padding:0 24px;height:58px;
+  display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:9}
+.topbar-title{font-size:15px;font-weight:600;flex:1;letter-spacing:-.01em}
+.topbar-badge{font-size:12px;padding:4px 12px;border-radius:20px;background:var(--blue-lt);color:var(--blue);font-weight:600}
+
+.content{padding:20px 24px;flex:1}
+.page{display:none}.page.active{display:block}
+.page-hd{margin-bottom:20px}
+.page-hd h2{font-size:19px;font-weight:700;letter-spacing:-.02em}
+.page-hd .sub{font-size:13px;color:var(--muted);margin-top:4px}
+
+/* ── Overview stats ── */
+.overview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:24px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;text-align:center;
+  box-shadow:var(--sh);transition:transform .18s,box-shadow .18s}
+.stat-card:hover{transform:translateY(-3px);box-shadow:var(--sh-md)}
+.stat-card .num{font-size:32px;font-weight:700;margin-bottom:4px;letter-spacing:-.02em}
+.stat-card .lbl{font-size:12px;color:var(--muted)}
+.stat-card.hi .num{color:var(--teal)}.stat-card.warn .num{color:var(--amber)}.stat-card.bad .num{color:var(--red)}
+.stat-card.blue .num{color:var(--blue)}
+
+.score-banner{background:linear-gradient(135deg,#2477c8 0%,#185FA5 60%,#134a82 100%);border-radius:16px;
+  padding:22px 26px;display:flex;align-items:center;gap:20px;margin-bottom:20px;color:#fff;
+  box-shadow:0 8px 28px rgba(24,95,165,.3)}
+.score-big{font-size:48px;font-weight:700;line-height:1}
+.score-info .title{font-size:16px;font-weight:600;margin-bottom:4px}
+.score-info .desc{font-size:13px;opacity:.8}
+.score-ring{width:80px;height:80px;flex-shrink:0;position:relative}
+.score-ring svg{transform:rotate(-90deg)}
+.score-ring .ring-bg{fill:none;stroke:rgba(255,255,255,.2);stroke-width:6}
+.score-ring .ring-fill{fill:none;stroke:#fff;stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .8s}
+.score-ring .ring-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff}
+
+/* ── Kanban (read-only) ── */
+.kanban{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;align-items:flex-start}
+.kanban::-webkit-scrollbar{height:5px}.kanban::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.col{flex-shrink:0;width:230px;background:linear-gradient(180deg,#EEEDE8,#E9E8E2);border-radius:14px;overflow:hidden;border:1px solid rgba(0,0,0,.03)}
+.col-header{padding:11px 13px;display:flex;align-items:center;gap:8px}
+.col-dot{width:9px;height:9px;border-radius:50%;box-shadow:0 0 0 3px rgba(0,0,0,.04)}.col-name{font-size:13px;font-weight:600;flex:1}
+.col-count{font-size:11px;color:var(--muted);background:var(--surface);padding:2px 8px;border-radius:20px;font-weight:600;box-shadow:var(--sh)}
+.col-body{padding:8px;display:flex;flex-direction:column;gap:8px;min-height:100px}
+.card{background:var(--surface);border-radius:11px;padding:12px 13px;border:1px solid var(--border);
+  box-shadow:0 1px 2px rgba(26,26,24,.04);transition:transform .18s,box-shadow .18s,border-color .18s}
+.card:hover{transform:translateY(-2px);box-shadow:var(--sh-md);border-color:#d4d2c8}
+.card.late{border-left:3px solid var(--red)}
+.card-top{display:flex;align-items:flex-start;gap:6px;margin-bottom:6px}
+.card-title{font-size:13px;font-weight:500;flex:1;line-height:1.45}
+.tag{font-size:10px;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;font-weight:500}
+.tag-quiz{background:var(--purple-lt);color:var(--purple)}.tag-essay{background:var(--red-lt);color:var(--red)}
+.tag-project{background:var(--blue-lt);color:var(--blue)}.tag-exercise{background:var(--teal-lt);color:var(--teal)}
+.progress-bar{height:3px;background:var(--border);border-radius:2px;margin-bottom:8px}
+.progress-fill{height:100%;border-radius:2px}
+.card-footer{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--hint)}
+.card-footer i{font-size:12px}
+.late-text{color:var(--red);font-weight:500}.done-text{color:var(--teal)}
+
+/* ── Materials ── */
+.mat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.mat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:8px;
+  box-shadow:var(--sh);transition:transform .18s,box-shadow .18s}
+.mat-card:hover{transform:translateY(-3px);box-shadow:var(--sh-md)}
+.mat-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.mat-icon.pdf{background:var(--red-lt);color:var(--red)}.mat-icon.doc{background:var(--blue-lt);color:var(--blue)}
+.mat-icon.image{background:var(--teal-lt);color:var(--teal)}.mat-icon.link{background:var(--purple-lt);color:var(--purple)}
+.mat-title{font-size:14px;font-weight:500}.mat-sub{font-size:12px;color:var(--muted)}.mat-desc{font-size:12px;color:var(--hint);line-height:1.5}
+
+/* ── Videos ── */
+.vid-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.vid-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;
+  box-shadow:var(--sh);transition:transform .18s,box-shadow .18s}
+.vid-card:hover{transform:translateY(-3px);box-shadow:var(--sh-md)}
+.vid-thumb{width:100%;aspect-ratio:16/9;border:none;display:block}
+.vid-body{padding:12px}
+.vid-title{font-size:14px;font-weight:500;margin-bottom:4px}
+.vid-meta{font-size:12px;color:var(--muted);margin-bottom:6px}
+.vid-desc{font-size:12px;color:var(--hint);line-height:1.5}
+.vid-footer{padding:0 12px 12px}
+
+/* ── Grades ── */
+.grade-header{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 22px;margin-bottom:16px;box-shadow:var(--sh)}
+.grade-avatar{width:52px;height:52px;border-radius:50%;font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.grade-info .name{font-size:16px;font-weight:600}.grade-info .cls{font-size:13px;color:var(--muted)}
+.grade-score{margin-left:auto;text-align:right}
+.grade-score .num{font-size:32px;font-weight:700;color:var(--blue)}.grade-score .lbl{font-size:12px;color:var(--muted)}
+.task-list{display:flex;flex-direction:column;gap:8px}
+.task-row{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  padding:15px 17px;display:flex;align-items:center;gap:14px;box-shadow:var(--sh);transition:transform .18s,box-shadow .18s}
+.task-row:hover{transform:translateX(2px);box-shadow:var(--sh-md)}
+.task-row-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.task-row-body{flex:1}
+.task-row-title{font-size:14px;font-weight:500}
+.task-row-meta{font-size:12px;color:var(--muted);margin-top:2px}
+.task-row-score{text-align:right;flex-shrink:0}
+.task-row-score .pts{font-size:18px;font-weight:700}
+.task-row-score .max{font-size:11px;color:var(--muted)}
+.badge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500}
+.badge-done{background:var(--teal-lt);color:var(--teal)}
+.badge-prog{background:var(--amber-lt);color:var(--amber)}
+.badge-todo{background:var(--bg);color:var(--hint);border:1px solid var(--border)}
+.badge-late{background:var(--red-lt);color:var(--red)}
+
+/* ── Shared ── */
+.empty-state{text-align:center;padding:60px 20px;color:var(--hint)}
+.empty-state i{font-size:48px;margin-bottom:12px;display:block}
+.empty-state p{font-size:14px}
+
+.btn{padding:8px 15px;border-radius:9px;font-size:13px;cursor:pointer;font-family:'Sarabun',sans-serif;display:inline-flex;align-items:center;gap:5px;border:none;transition:all .18s}
+.btn-ghost{background:var(--surface);color:var(--muted);border:1px solid var(--border)}.btn-ghost:hover{background:var(--bg);color:var(--text);border-color:#d4d2c8}
+.btn-sm{padding:5px 11px;font-size:12px}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sb-header">
+    <div class="logo">
+      <div class="logo-icon"><i class="ti ti-school"></i></div>
+      <div>
+        <div class="logo-name">ClassFlow</div>
+        <div class="logo-sub">พอร์ทัลนักเรียน</div>
+      </div>
+    </div>
+  </div>
+  <div class="stu-profile">
+    <div class="stu-av av-t" id="sb-avatar">--</div>
+    <div>
+      <div class="stu-profile-name" id="sb-name">กำลังโหลด...</div>
+      <div class="stu-profile-class" id="sb-class">—</div>
+    </div>
+  </div>
+  <nav class="nav">
+    <div class="nav-sec">เมนูหลัก</div>
+    <button class="nav-item active" data-page="overview"><i class="ti ti-dashboard"></i> ภาพรวม</button>
+    <button class="nav-item" data-page="tasks"><i class="ti ti-layout-kanban"></i> งานของฉัน</button>
+    <button class="nav-item" data-page="materials"><i class="ti ti-book"></i> สื่อการเรียน</button>
+    <button class="nav-item" data-page="videos"><i class="ti ti-video"></i> วิดีโอบทเรียน</button>
+    <button class="nav-item" data-page="grades"><i class="ti ti-award"></i> คะแนนของฉัน</button>
+  </nav>
+  <div class="sb-footer">
+    <button class="btn-logout" onclick="logout()"><i class="ti ti-logout"></i> ออกจากระบบ</button>
+  </div>
+</aside>
+
+<div class="main">
+  <header class="topbar">
+    <div class="topbar-title" id="topbar-title">ภาพรวม</div>
+    <span class="topbar-badge" id="topbar-class">—</span>
+  </header>
+
+  <!-- Overview -->
+  <div class="page active content" id="page-overview">
+    <div class="score-banner" id="score-banner">
+      <div>
+        <div style="font-size:14px;opacity:.8;margin-bottom:4px">คะแนนของฉัน</div>
+        <div class="score-big" id="ov-score">—</div>
+        <div style="font-size:13px;opacity:.7;margin-top:4px" id="ov-rank">—</div>
+      </div>
+      <div style="flex:1"></div>
+      <div class="score-ring" id="score-ring">
+        <svg viewBox="0 0 80 80" width="80" height="80">
+          <circle class="ring-bg" cx="40" cy="40" r="32"/>
+          <circle class="ring-fill" id="ring-arc" cx="40" cy="40" r="32"
+                  stroke-dasharray="201.06" stroke-dashoffset="201.06"/>
+        </svg>
+        <div class="ring-label" id="ring-pct">0%</div>
+      </div>
+    </div>
+    <div class="overview-grid" id="ov-stats"></div>
+    <h3 style="font-size:14px;font-weight:600;margin-bottom:12px;color:var(--muted)">งานล่าสุด</h3>
+    <div id="ov-recent"></div>
+  </div>
+
+  <!-- Tasks -->
+  <div class="page content" id="page-tasks">
+    <div class="page-hd"><h2>งานของฉัน</h2><div class="sub" id="tasks-class-label"></div></div>
+    <div class="kanban" id="kanban"></div>
+  </div>
+
+  <!-- Materials -->
+  <div class="page content" id="page-materials">
+    <div class="page-hd"><h2>สื่อการเรียน</h2></div>
+    <div class="mat-grid" id="mat-grid"></div>
+  </div>
+
+  <!-- Videos -->
+  <div class="page content" id="page-videos">
+    <div class="page-hd"><h2>วิดีโอบทเรียน</h2></div>
+    <div class="vid-grid" id="vid-grid"></div>
+  </div>
+
+  <!-- Grades -->
+  <div class="page content" id="page-grades">
+    <div class="page-hd"><h2>คะแนนของฉัน</h2></div>
+    <div class="grade-header" id="grade-header"></div>
+    <div class="task-list" id="task-list"></div>
+  </div>
+</div>
+
+<script>
+const COLS = [
+  { key:'assigned',    name:'มอบหมายแล้ว', color:'#AFA9EC', prog:'#AFA9EC' },
+  { key:'in_progress', name:'กำลังทำ',      color:'#EF9F27', prog:'#EF9F27' },
+  { key:'review',      name:'รอตรวจ',       color:'#378ADD', prog:'#378ADD' },
+  { key:'done',        name:'ตรวจแล้ว',     color:'#5DCAA5', prog:'#5DCAA5' },
+];
+const TAG_LABELS = { quiz:'แบบทดสอบ', essay:'เรียงความ', project:'โปรเจกต์', exercise:'แบบฝึก' };
+const MAT_ICONS  = { pdf:'ti-file-type-pdf', doc:'ti-file-text', image:'ti-photo', link:'ti-link' };
+const PAGE_TITLES = { overview:'ภาพรวม', tasks:'งานของฉัน', materials:'สื่อการเรียน', videos:'วิดีโอบทเรียน', grades:'คะแนนของฉัน' };
+
+let dash = null;
+
+// ── Nav ───────────────────────────────────────────────────────────────────────
+document.querySelectorAll('.nav-item[data-page]').forEach(btn => {
+  btn.addEventListener('click', () => showPage(btn.dataset.page));
+});
+
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('.nav-item[data-page]').forEach(b =>
+    b.classList.toggle('active', b.dataset.page === page));
+  document.getElementById('topbar-title').textContent = PAGE_TITLES[page] || page;
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+async function init() {
+  // Check auth
+  let me;
+  try {
+    const r = await fetch('/api/auth/me');
+    if (!r.ok) { location.replace('/login.html'); return; }
+    me = await r.json();
+    if (me.role !== 'student') { location.replace('/'); return; }
+  } catch(e) { location.replace('/login.html'); return; }
+
+  // Load dashboard
+  try {
+    const r = await fetch('/api/student/dashboard');
+    if (!r.ok) { location.replace('/login.html'); return; }
+    dash = await r.json();
+    renderAll(me, dash);
+  } catch(e) {}
+}
+
+function renderAll(me, d) {
+  const { student, classInfo, tasks, materials, videos, stats } = d;
+  const AV = student.avatarClass || 'av-t';
+  const initials = student.initials || me.name.slice(0, 2);
+
+  // Sidebar profile
+  const avEl = document.getElementById('sb-avatar');
+  avEl.textContent  = initials;
+  avEl.className    = `stu-av ${AV}`;
+  document.getElementById('sb-name').textContent  = student.name || me.name;
+  document.getElementById('sb-class').textContent = classInfo.name || '—';
+  document.getElementById('topbar-class').textContent = classInfo.name || '—';
+
+  renderOverview(student, classInfo, tasks, stats);
+  renderTasks(tasks, classInfo);
+  renderMaterials(materials);
+  renderVideos(videos);
+  renderGrades(student, tasks);
+}
+
+// ── Overview ──────────────────────────────────────────────────────────────────
+function renderOverview(student, classInfo, tasks, stats) {
+  const score = student.score || 0;
+
+  // Score ring
+  const circ = 2 * Math.PI * 32;
+  document.getElementById('ring-arc').style.strokeDashoffset = circ - (circ * score / 100);
+  document.getElementById('ring-pct').textContent = score + '%';
+  document.getElementById('ov-score').textContent = score + '%';
+  const rank = score >= 80 ? 'ผลการเรียนดีเยี่ยม' : score >= 70 ? 'ผลการเรียนดี' : 'ต้องพัฒนาเพิ่ม';
+  document.getElementById('ov-rank').textContent = rank;
+
+  // Stats grid
+  const allTasks = Object.values(tasks).flat();
+  document.getElementById('ov-stats').innerHTML = `
+    <div class="stat-card blue"><div class="num">${stats.total}</div><div class="lbl">งานทั้งหมด</div></div>
+    <div class="stat-card hi"><div class="num">${stats.done}</div><div class="lbl">ตรวจแล้ว</div></div>
+    <div class="stat-card warn"><div class="num">${stats.inProgress}</div><div class="lbl">กำลังทำ</div></div>
+    <div class="stat-card bad"><div class="num">${stats.late}</div><div class="lbl">เลยกำหนด</div></div>`;
+
+  // Recent tasks
+  const recent = allTasks.slice(0, 4);
+  document.getElementById('ov-recent').innerHTML = recent.length
+    ? recent.map(t => `
+        <div class="task-row" style="margin-bottom:8px">
+          <div class="task-row-icon tag-${t.type}"
+               style="background:${t.type==='quiz'?'var(--purple-lt)':t.type==='project'?'var(--blue-lt)':t.type==='essay'?'var(--red-lt)':'var(--teal-lt)'}">
+            <i class="ti ${t.type==='quiz'?'ti-pencil':t.type==='project'?'ti-briefcase':t.type==='essay'?'ti-writing':'ti-list-check'}"
+               style="color:${t.type==='quiz'?'var(--purple)':t.type==='project'?'var(--blue)':t.type==='essay'?'var(--red)':'var(--teal)'}"></i>
+          </div>
+          <div class="task-row-body">
+            <div class="task-row-title">${t.title}</div>
+            <div class="task-row-meta">${t.dueDate || (t.avg ? 'เฉลี่ย ' + t.avg : t.submitted ? 'ส่งแล้ว ' + t.submitted : '—')}</div>
+          </div>
+          <span class="badge ${t.late?'badge-late':t.status==='done'?'badge-done':t.status==='in_progress'?'badge-prog':'badge-todo'}">
+            ${t.late?'เลยกำหนด':t.status==='done'?'ตรวจแล้ว':t.status==='in_progress'?'กำลังทำ':t.status==='review'?'รอตรวจ':'มอบหมายแล้ว'}
+          </span>
+        </div>`)
+      .join('')
+    : '<div class="empty-state"><i class="ti ti-check"></i><p>ยังไม่มีงาน</p></div>';
+}
+
+// ── Tasks (read-only Kanban) ──────────────────────────────────────────────────
+function renderTasks(tasks, classInfo) {
+  document.getElementById('tasks-class-label').textContent = `ห้อง ${classInfo.name || ''}`;
+  const board = document.getElementById('kanban');
+  board.innerHTML = '';
+  for (const col of COLS) {
+    const items = tasks[col.key] || [];
+    const div   = document.createElement('div');
+    div.className = 'col';
+    div.innerHTML = `
+      <div class="col-header">
+        <div class="col-dot" style="background:${col.color}"></div>
+        <div class="col-name">${col.name}</div>
+        <div class="col-count">${items.length}</div>
+      </div>
+      <div class="col-body">
+        ${items.map(t => buildCard(t, col)).join('')}
+        ${!items.length ? '<div style="padding:8px;font-size:12px;color:var(--hint);text-align:center">ว่าง</div>' : ''}
+      </div>`;
+    board.appendChild(div);
+  }
+}
+
+function buildCard(t, col) {
+  const prog = `<div class="progress-bar"><div class="progress-fill" style="width:${t.progress||0}%;background:${col.prog}"></div></div>`;
+  let footer = '';
+  if      (t.late)      footer = `<span class="late-text"><i class="ti ti-clock"></i> เลยกำหนด!</span>`;
+  else if (t.avg)       footer = `<span class="done-text"><i class="ti ti-check"></i> เฉลี่ย ${t.avg}</span>`;
+  else if (t.submitted) footer = `<span><i class="ti ti-users"></i> ${t.submitted} ส่งแล้ว</span>`;
+  else if (t.dueDate)   footer = `<span><i class="ti ti-clock"></i> ${t.dueDate}</span>`;
+  return `
+    <div class="card ${t.late ? 'late' : ''}">
+      <div class="card-top">
+        <div class="card-title">${t.title}</div>
+        <span class="tag tag-${t.type}">${TAG_LABELS[t.type] || t.type}</span>
+      </div>
+      ${(t.progress > 0 || col.key !== 'assigned') ? prog : ''}
+      <div class="card-footer">${footer}
+        ${t.points ? `<span style="margin-left:auto"><i class="ti ti-star"></i> ${t.points}</span>` : ''}
+      </div>
+    </div>`;
+}
+
+// ── Materials ─────────────────────────────────────────────────────────────────
+function renderMaterials(mats) {
+  document.getElementById('mat-grid').innerHTML = mats.length
+    ? mats.map(m => `
+        <div class="mat-card">
+          <div style="display:flex;align-items:flex-start;gap:12px">
+            <div class="mat-icon ${m.type}"><i class="ti ${MAT_ICONS[m.type] || 'ti-file'}"></i></div>
+            <div><div class="mat-title">${m.title}</div><div class="mat-sub">${m.subject}</div></div>
+          </div>
+          <div class="mat-desc">${m.description}</div>
+          ${m.url && m.url !== '#' ? `<a href="${m.url}" target="_blank" class="btn btn-ghost btn-sm"><i class="ti ti-external-link"></i> เปิด</a>` : ''}
+        </div>`)
+      .join('')
+    : '<div class="empty-state"><i class="ti ti-book-off"></i><p>ยังไม่มีสื่อการเรียน</p></div>';
+}
+
+// ── Videos ────────────────────────────────────────────────────────────────────
+function renderVideos(vids) {
+  document.getElementById('vid-grid').innerHTML = vids.length
+    ? vids.map(v => `
+        <div class="vid-card">
+          <iframe class="vid-thumb" src="${v.url}" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>
+          <div class="vid-body">
+            <div class="vid-title">${v.title}</div>
+            ${v.duration ? `<div class="vid-meta"><i class="ti ti-clock" style="font-size:12px"></i> ${v.duration}</div>` : ''}
+            ${v.description ? `<div class="vid-desc">${v.description}</div>` : ''}
+          </div>
+          <div class="vid-footer">
+            <a href="${v.url.replace('/embed/','/watch?v=')}" target="_blank" class="btn btn-ghost btn-sm"><i class="ti ti-external-link"></i> YouTube</a>
+          </div>
+        </div>`)
+      .join('')
+    : '<div class="empty-state"><i class="ti ti-video-off"></i><p>ยังไม่มีวิดีโอ</p></div>';
+}
+
+// ── Grades ────────────────────────────────────────────────────────────────────
+function renderGrades(student, tasks) {
+  const score = student.score || 0;
+  const AV    = student.avatarClass || 'av-t';
+  const scl   = score >= 80 ? 'var(--teal)' : score >= 70 ? 'var(--amber)' : 'var(--red)';
+  document.getElementById('grade-header').innerHTML = `
+    <div class="grade-avatar ${AV}">${student.initials || '??'}</div>
+    <div class="grade-info">
+      <div class="name">${student.name}</div>
+      <div class="cls">${dash?.classInfo?.name || '—'}</div>
+    </div>
+    <div class="grade-score">
+      <div class="num" style="color:${scl}">${score}%</div>
+      <div class="lbl">คะแนนรวม</div>
+    </div>`;
+
+  const allTasks = Object.values(tasks).flat();
+  const seed = (tId) => { let h = 0; for (const c of (student.id + tId)) h = h * 31 + c.charCodeAt(0); return ((h % 41) + 60); };
+  const iconMap = { quiz:'ti-pencil', project:'ti-briefcase', essay:'ti-writing', exercise:'ti-list-check' };
+  const bgMap   = { quiz:'var(--purple-lt)', project:'var(--blue-lt)', essay:'var(--red-lt)', exercise:'var(--teal-lt)' };
+  const clrMap  = { quiz:'var(--purple)', project:'var(--blue)', essay:'var(--red)', exercise:'var(--teal)' };
+
+  document.getElementById('task-list').innerHTML = allTasks.length
+    ? allTasks.map(t => {
+        const sc = t.status === 'done' ? seed(t.id) : null;
+        const sclr = sc ? (sc >= 80 ? 'var(--teal)' : sc >= 70 ? 'var(--amber)' : 'var(--red)') : 'var(--hint)';
+        const badge = t.late ? 'badge-late เลยกำหนด' : t.status === 'done' ? 'badge-done ตรวจแล้ว' : t.status === 'review' ? 'badge-prog รอตรวจ' : t.status === 'in_progress' ? 'badge-prog กำลังทำ' : 'badge-todo มอบหมายแล้ว';
+        const [bc, bl] = badge.split(' ');
+        return `
+          <div class="task-row">
+            <div class="task-row-icon" style="background:${bgMap[t.type]};color:${clrMap[t.type]}">
+              <i class="ti ${iconMap[t.type] || 'ti-file'}"></i>
+            </div>
+            <div class="task-row-body">
+              <div class="task-row-title">${t.title}</div>
+              <div class="task-row-meta">${TAG_LABELS[t.type] || t.type} · ${t.points} คะแนน${t.dueDate ? ' · ' + t.dueDate : ''}</div>
+            </div>
+            <span class="badge ${bc}" style="margin-right:12px">${bl}</span>
+            <div class="task-row-score">
+              ${sc ? `<div class="pts" style="color:${sclr}">${sc}</div><div class="max">/${t.points}</div>` : '<div class="pts" style="color:var(--hint)">—</div>'}
+            </div>
+          </div>`;
+      }).join('')
+    : '<div class="empty-state"><i class="ti ti-award-off"></i><p>ยังไม่มีข้อมูลคะแนน</p></div>';
+}
+
+// ── Logout ────────────────────────────────────────────────────────────────────
+async function logout() {
+  await fetch('/api/auth/logout', { method: 'POST' });
+  location.replace('/login.html');
+}
+
+init();
+</script>
+</body>
+</html>

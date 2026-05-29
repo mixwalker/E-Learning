@@ -1,0 +1,779 @@
+{
+  "users": [
+    {
+      "id": "u1",
+      "username": "teacher",
+      "password": "scrypt$9eed9646615d45c5c8f7f6fb215bcff6$e38a7a87a1db3a4739a3af2d9b2f3b45b13b75db36b7fc4fea2f7e8151d1281abdf9c8382e7250691459d330f76f396eb0cfcb718b938cda81ed2b1e6d26b4c3",
+      "role": "teacher",
+      "name": "ครูสมชาย"
+    },
+    {
+      "id": "u2",
+      "username": "s001",
+      "password": "scrypt$f855c8f68147ccbd687984777aa3dcd6$c0a7df18c8fa8cfa2a6ce16a457f28d7003e592df07210e3cde25a59a910c6029a286af49eb9fc6c5de0f5b432ca1400de29d8c333e57eea3f57d775c343d6d7",
+      "role": "student",
+      "name": "สมหญิง ใจดี",
+      "classId": "m5-1",
+      "studentRef": "s1"
+    },
+    {
+      "id": "u3",
+      "username": "s002",
+      "password": "scrypt$583428d45447286397d52a46944d874b$55064acda619929786e0bd1be11673bbd50918f1eb63d164518992c9859af8f97eed5a522070d68440e637459915d9e5668930cee30d1dd5ca2d1a535f855972",
+      "role": "student",
+      "name": "พรนภา มีสุข",
+      "classId": "m5-1",
+      "studentRef": "s2"
+    },
+    {
+      "id": "u4",
+      "username": "s003",
+      "password": "scrypt$5ebbce6d69098c3a6313899894cec615$46979ee1d0dd9d40397fbee00a894a59162b5313b84da27da33e3375324db7431d6c3f54d585bd0247819d40bc249e10470174d71826592bd343ff8f6fe80ddd",
+      "role": "student",
+      "name": "ธนกร รุ่งเรือง",
+      "classId": "m5-1",
+      "studentRef": "s3"
+    },
+    {
+      "id": "u5",
+      "username": "s004",
+      "password": "scrypt$7b0138916e9ee14c85863e33f40c1220$1e6f31380435a332f78c5c57c50756a3d2c9966fc45f43af4fe5d20b8db8b4970b997a3543ec5cdb301f8b1b26e13f8b44aa397fe68efa9d405c875890eb068e",
+      "role": "student",
+      "name": "วิชัย บุญมา",
+      "classId": "m5-1",
+      "studentRef": "s4"
+    },
+    {
+      "id": "u6",
+      "username": "s005",
+      "password": "scrypt$d3007bf71cfdd7f2d85558d751c8c23a$cb7337da0bdf2df27d0ec3c052bbda96b63598efd181db8ed8529b83d3bd8055b2b9b77e022f82f4a89e73ddac1094ede34dc149c6161e65b5e642e03f4eb342",
+      "role": "student",
+      "name": "ประภา แสนดี",
+      "classId": "m5-1",
+      "studentRef": "s5"
+    },
+    {
+      "id": "u7",
+      "username": "s006",
+      "password": "scrypt$0234bc0d3f7b367e4a76bd206a3389c4$570323365d934bf6d1320845d865d2382260e1071c77759b272dc5146f0d4b293703ce5dbe65070e84ce187d74644d422333688cdf8b1a1e0663c6407355ee31",
+      "role": "student",
+      "name": "มานี มีสุข",
+      "classId": "m5-2",
+      "studentRef": "s6"
+    },
+    {
+      "id": "u8",
+      "username": "s007",
+      "password": "scrypt$2a0ab28a39bf6fdfd900fb16f0d668d1$7176c808e51981758d9f85808c52543d124595d5514fea8a7d8fd9553b4e7d8e7cba8337a750c2e7fd128486bc0c7e8f47d2ca97bbac2644fdd4ed952bccfbd3",
+      "role": "student",
+      "name": "บุญชัย งามดี",
+      "classId": "m5-3",
+      "studentRef": "s9"
+    }
+  ],
+  "classes": [
+    {
+      "id": "m5-1",
+      "name": "ม.5/1",
+      "studentCount": 30
+    },
+    {
+      "id": "m5-2",
+      "name": "ม.5/2",
+      "studentCount": 28
+    },
+    {
+      "id": "m5-3",
+      "name": "ม.5/3",
+      "studentCount": 32
+    }
+  ],
+  "students": [
+    {
+      "id": "s1",
+      "name": "สมหญิง ใจดี",
+      "initials": "สม",
+      "classId": "m5-1",
+      "score": 98,
+      "avatarClass": "av-t"
+    },
+    {
+      "id": "s2",
+      "name": "พรนภา มีสุข",
+      "initials": "พร",
+      "classId": "m5-1",
+      "score": 95,
+      "avatarClass": "av-p"
+    },
+    {
+      "id": "s3",
+      "name": "ธนกร รุ่งเรือง",
+      "initials": "ธน",
+      "classId": "m5-1",
+      "score": 82,
+      "avatarClass": "av-b"
+    },
+    {
+      "id": "s4",
+      "name": "วิชัย บุญมา",
+      "initials": "วิ",
+      "classId": "m5-1",
+      "score": 74,
+      "avatarClass": "av-a"
+    },
+    {
+      "id": "s6",
+      "name": "มานี มีสุข",
+      "initials": "มา",
+      "classId": "m5-2",
+      "score": 90,
+      "avatarClass": "av-t"
+    },
+    {
+      "id": "s7",
+      "name": "สุดา รื่นเริง",
+      "initials": "สุ",
+      "classId": "m5-2",
+      "score": 85,
+      "avatarClass": "av-p"
+    },
+    {
+      "id": "s8",
+      "name": "ชัยวัฒน์ ดีงาม",
+      "initials": "ชั",
+      "classId": "m5-2",
+      "score": 71,
+      "avatarClass": "av-a"
+    },
+    {
+      "id": "s9",
+      "name": "บุญชัย งามดี",
+      "initials": "บุ",
+      "classId": "m5-3",
+      "score": 88,
+      "avatarClass": "av-b"
+    },
+    {
+      "id": "s10",
+      "name": "รัตนา สว่าง",
+      "initials": "รั",
+      "classId": "m5-3",
+      "score": 76,
+      "avatarClass": "av-p"
+    }
+  ],
+  "tasks": {
+    "m5-1": {
+      "assigned": [
+        {
+          "id": "t2",
+          "classId": "m5-1",
+          "title": "โปรเจกต์กราฟฟังก์ชัน",
+          "type": "project",
+          "dueDate": "5 มิ.ย.",
+          "points": 50,
+          "status": "assigned",
+          "progress": 0,
+          "students": [
+            "วิ",
+            "ปร"
+          ],
+          "createdAt": "2026-05-21T08:00:00.000Z"
+        },
+        {
+          "id": "t3",
+          "classId": "m5-1",
+          "title": "แบบทดสอบ Limit",
+          "type": "quiz",
+          "dueDate": "29 พ.ค.",
+          "points": 30,
+          "status": "assigned",
+          "progress": 0,
+          "students": [
+            "สม"
+          ],
+          "createdAt": "2026-05-22T08:00:00.000Z"
+        },
+        {
+          "id": "t1",
+          "classId": "m5-1",
+          "title": "แบบฝึกหัดอินทิกรัล บทที่ 5",
+          "type": "exercise",
+          "dueDate": "30 พ.ค.",
+          "points": 20,
+          "status": "assigned",
+          "progress": 0,
+          "students": [
+            "สม",
+            "พร",
+            "ธน"
+          ],
+          "createdAt": "2026-05-20T08:00:00.000Z"
+        }
+      ],
+      "in_progress": [
+        {
+          "id": "t4",
+          "classId": "m5-1",
+          "title": "เรียงความ คณิตศาสตร์กับชีวิต",
+          "type": "essay",
+          "dueDate": "31 พ.ค.",
+          "points": 15,
+          "status": "in_progress",
+          "progress": 60,
+          "students": [
+            "พร",
+            "ธน"
+          ],
+          "createdAt": "2026-05-18T08:00:00.000Z"
+        },
+        {
+          "id": "t5",
+          "classId": "m5-1",
+          "title": "แบบฝึกหัดอนุพันธ์ ชุด 2",
+          "type": "exercise",
+          "dueDate": "เลยกำหนด!",
+          "points": 20,
+          "status": "in_progress",
+          "progress": 30,
+          "students": [
+            "วิ"
+          ],
+          "late": true,
+          "createdAt": "2026-05-10T08:00:00.000Z"
+        }
+      ],
+      "review": [
+        {
+          "id": "t6",
+          "classId": "m5-1",
+          "title": "แบบทดสอบลำดับและอนุกรม",
+          "type": "quiz",
+          "dueDate": "",
+          "points": 25,
+          "status": "review",
+          "progress": 100,
+          "students": [
+            "สม",
+            "พร",
+            "ธน"
+          ],
+          "submitted": "28/30",
+          "createdAt": "2026-05-15T08:00:00.000Z"
+        },
+        {
+          "id": "t7",
+          "classId": "m5-1",
+          "title": "โปรเจกต์สถิติเบื้องต้น",
+          "type": "project",
+          "dueDate": "",
+          "points": 50,
+          "status": "review",
+          "progress": 100,
+          "students": [
+            "วิ",
+            "ปร"
+          ],
+          "submitted": "15/30",
+          "createdAt": "2026-05-12T08:00:00.000Z"
+        }
+      ],
+      "done": [
+        {
+          "id": "t8",
+          "classId": "m5-1",
+          "title": "แบบทดสอบบทที่ 4",
+          "type": "quiz",
+          "dueDate": "",
+          "points": 30,
+          "status": "done",
+          "progress": 100,
+          "students": [
+            "สม",
+            "พร",
+            "ธน"
+          ],
+          "avg": "78%",
+          "createdAt": "2026-05-05T08:00:00.000Z"
+        },
+        {
+          "id": "t9",
+          "classId": "m5-1",
+          "title": "แบบฝึกหัดการพิสูจน์",
+          "type": "exercise",
+          "dueDate": "",
+          "points": 20,
+          "status": "done",
+          "progress": 100,
+          "students": [],
+          "avg": "85%",
+          "createdAt": "2026-05-01T08:00:00.000Z"
+        }
+      ]
+    },
+    "m5-2": {
+      "assigned": [
+        {
+          "id": "t10",
+          "classId": "m5-2",
+          "title": "แบบฝึกหัดเรขาคณิตวิเคราะห์",
+          "type": "exercise",
+          "dueDate": "2 มิ.ย.",
+          "points": 20,
+          "status": "assigned",
+          "progress": 0,
+          "students": [
+            "มา",
+            "สุ"
+          ],
+          "createdAt": "2026-05-20T08:00:00.000Z"
+        }
+      ],
+      "in_progress": [],
+      "review": [
+        {
+          "id": "t11",
+          "classId": "m5-2",
+          "title": "แบบทดสอบเวกเตอร์",
+          "type": "quiz",
+          "dueDate": "",
+          "points": 30,
+          "status": "review",
+          "progress": 100,
+          "students": [
+            "มา"
+          ],
+          "submitted": "20/28",
+          "createdAt": "2026-05-14T08:00:00.000Z"
+        }
+      ],
+      "done": []
+    },
+    "m5-3": {
+      "assigned": [
+        {
+          "id": "t12",
+          "classId": "m5-3",
+          "title": "โปรเจกต์ตรีโกณมิติ",
+          "type": "project",
+          "dueDate": "10 มิ.ย.",
+          "points": 50,
+          "status": "assigned",
+          "progress": 0,
+          "students": [
+            "บุ",
+            "รั"
+          ],
+          "createdAt": "2026-05-22T08:00:00.000Z"
+        }
+      ],
+      "in_progress": [],
+      "review": [],
+      "done": [
+        {
+          "id": "t13",
+          "classId": "m5-3",
+          "title": "แบบทดสอบฟังก์ชันตรีโกณ",
+          "type": "quiz",
+          "dueDate": "",
+          "points": 25,
+          "status": "done",
+          "progress": 100,
+          "students": [
+            "บุ",
+            "รั"
+          ],
+          "avg": "81%",
+          "createdAt": "2026-05-10T08:00:00.000Z"
+        }
+      ]
+    }
+  },
+  "materials": {
+    "m5-1": [
+      {
+        "id": "mat1",
+        "classId": "m5-1",
+        "title": "สรุปสูตรอินทิกรัล",
+        "subject": "คณิตศาสตร์",
+        "type": "pdf",
+        "url": "#",
+        "description": "สูตรอินทิกรัลแบบต่างๆ พร้อมตัวอย่าง",
+        "createdAt": "2026-05-10T08:00:00.000Z"
+      },
+      {
+        "id": "mat2",
+        "classId": "m5-1",
+        "title": "ใบงานอนุพันธ์",
+        "subject": "คณิตศาสตร์",
+        "type": "doc",
+        "url": "#",
+        "description": "แบบฝึกหัดอนุพันธ์ระดับพื้นฐาน",
+        "createdAt": "2026-05-12T08:00:00.000Z"
+      },
+      {
+        "id": "mat3",
+        "classId": "m5-1",
+        "title": "กราฟฟังก์ชันตัวอย่าง",
+        "subject": "คณิตศาสตร์",
+        "type": "image",
+        "url": "#",
+        "description": "รูปกราฟประเภทต่างๆ สำหรับอ้างอิง",
+        "createdAt": "2026-05-15T08:00:00.000Z"
+      },
+      {
+        "id": "mat4",
+        "classId": "m5-1",
+        "title": "ลิงก์ Khan Academy",
+        "subject": "คณิตศาสตร์",
+        "type": "link",
+        "url": "https://www.khanacademy.org/math/calculus-1",
+        "description": "แหล่งเรียนรู้ออนไลน์ฟรี",
+        "createdAt": "2026-05-16T08:00:00.000Z"
+      }
+    ],
+    "m5-2": [
+      {
+        "id": "mat5",
+        "classId": "m5-2",
+        "title": "สรุปสูตรเวกเตอร์",
+        "subject": "คณิตศาสตร์",
+        "type": "pdf",
+        "url": "#",
+        "description": "สรุปสูตรเวกเตอร์และการประยุกต์",
+        "createdAt": "2026-05-13T08:00:00.000Z"
+      }
+    ],
+    "m5-3": [
+      {
+        "id": "mat6",
+        "classId": "m5-3",
+        "title": "ตารางค่าตรีโกณมิติ",
+        "subject": "คณิตศาสตร์",
+        "type": "pdf",
+        "url": "#",
+        "description": "ตารางค่า sin cos tan ทุกมุม",
+        "createdAt": "2026-05-11T08:00:00.000Z"
+      }
+    ]
+  },
+  "videos": {
+    "m5-1": [
+      {
+        "id": "vid2",
+        "classId": "m5-1",
+        "title": "Integration by Substitution",
+        "url": "https://www.youtube.com/embed/sdYdnpYn-1o",
+        "description": "วิธีการแทนค่าในอินทิกรัล พร้อมตัวอย่าง 5 ข้อ",
+        "duration": "22:15",
+        "createdAt": "2026-05-14T08:00:00.000Z"
+      }
+    ],
+    "m5-2": [
+      {
+        "id": "vid3",
+        "classId": "m5-2",
+        "title": "เวกเตอร์ใน 3 มิติ",
+        "url": "https://www.youtube.com/embed/ml4NSzCQobk",
+        "description": "การดำเนินการเวกเตอร์และผลคูณ",
+        "duration": "15:45",
+        "createdAt": "2026-05-13T08:00:00.000Z"
+      }
+    ],
+    "m5-3": []
+  },
+  "timetable": [
+    {
+      "day": "จันทร์",
+      "periods": [
+        {
+          "time": "08:00–09:00",
+          "subject": "คณิตศาสตร์",
+          "room": "301",
+          "classId": "m5-1"
+        },
+        {
+          "time": "09:00–10:00",
+          "subject": "",
+          "room": "",
+          "classId": ""
+        },
+        {
+          "time": "10:00–11:00",
+          "subject": "คณิตศาสตร์",
+          "room": "302",
+          "classId": "m5-2"
+        },
+        {
+          "time": "13:00–14:00",
+          "subject": "คณิตศาสตร์",
+          "room": "303",
+          "classId": "m5-3"
+        },
+        {
+          "time": "14:00–15:00",
+          "subject": "",
+          "room": "",
+          "classId": ""
+        }
+      ]
+    },
+    {
+      "day": "อังคาร",
+      "periods": [
+        {
+          "time": "08:00–09:00",
+          "subject": "",
+          "room": "",
+          "classId": ""
+        },
+        {
+          "time": "09:00–10:00",
+          "subject": "คณิตศาสตร์",
+          "room": "301",
+          "classId": "m5-2"
+        },
+        {
+          "time": "10:00–11:00",
+          "subject": "",
+          "room": "",
+          "classId": ""
+        },
+        {
+          "time": "13:00–14:00",
+          "subject": "คณิตศาสตร์",
+          "room": "301",
+          "classId": "m5-1"
+        },
+        {
+          "time": "14:00–15:00",
+          "subject": "",
+          "room": "",
+          "classId": ""
+        }
+      ]
+    },
+    {
+      "day": "พุธ",
+      "periods": [
+        {
+          "time": "08:00–09:00",
+          "subject": "คณิตศาสตร์",
+          "room": "301",
+          "classId": "m5-1"
+        },
+        {
+          "time": "09:00–10:00",
+          "subject": "",
+          "room": "",
+          "classId": ""
+        },
+        {
+          "time": "10:00–11:00",
+          "subject": "คณิตศาสตร์",
+          "room": "303",
+          "classId": "m5-3"
+        },
+        {
+          "time": "13:00–14:00",
+          "subject": "",
+          "room": "",
+          "classId": ""
+        },
+        {
+          "time": "14:00–15:00",
+          "subject": "",
+          "room": "",
+          "classId": ""
+        }
+      ]
+    },
+    {
+      "day": "พฤหัสบดี",
+      "periods": [
+        {
+          "time": "08:00–09:00",
+          "subject": "",
+          "room": "",
+          "classId": ""
+        },
+        {
+          "time": "09:00–10:00",
+          "subject": "คณิตศาสตร์",
+          "room": "302",
+          "classId": "m5-2"
+        },
+        {
+          "time": "10:00–11:00",
+          "subject": "",
+          "room": "",
+          "classId": ""
+        },
+        {
+          "time": "13:00–14:00",
+          "subject": "คณิตศาสตร์",
+          "room": "301",
+          "classId": "m5-1"
+        },
+        {
+          "time": "14:00–15:00",
+          "subject": "",
+          "room": "",
+          "classId": ""
+        }
+      ]
+    },
+    {
+      "day": "ศุกร์",
+      "periods": [
+        {
+          "time": "08:00–09:00",
+          "subject": "คณิตศาสตร์",
+          "room": "301",
+          "classId": "m5-3"
+        },
+        {
+          "time": "09:00–10:00",
+          "subject": "",
+          "room": "",
+          "classId": ""
+        },
+        {
+          "time": "10:00–11:00",
+          "subject": "คณิตศาสตร์",
+          "room": "302",
+          "classId": "m5-1"
+        },
+        {
+          "time": "13:00–14:00",
+          "subject": "",
+          "room": "",
+          "classId": ""
+        },
+        {
+          "time": "14:00–15:00",
+          "subject": "คณิตศาสตร์",
+          "room": "301",
+          "classId": "m5-2"
+        }
+      ]
+    }
+  ],
+  "notifications": [
+    {
+      "id": "n1",
+      "text": "วิชัย บุญมา ส่งงานช้าเกินกำหนด — แบบฝึกหัดอนุพันธ์ ชุด 2",
+      "type": "warning",
+      "read": false,
+      "time": "2026-05-27T09:00:00.000Z"
+    },
+    {
+      "id": "n2",
+      "text": "แบบทดสอบ Limit ของ ม.5/1 ครบกำหนดพรุ่งนี้ 29 พ.ค.",
+      "type": "info",
+      "read": false,
+      "time": "2026-05-27T08:00:00.000Z"
+    },
+    {
+      "id": "n3",
+      "text": "โปรเจกต์สถิติเบื้องต้น รอตรวจอยู่ 15 ชิ้น",
+      "type": "info",
+      "read": false,
+      "time": "2026-05-26T14:00:00.000Z"
+    },
+    {
+      "id": "n4",
+      "text": "สมหญิง ใจดี ส่งงานครบทุกชิ้นตรงเวลา",
+      "type": "success",
+      "read": true,
+      "time": "2026-05-26T10:00:00.000Z"
+    },
+    {
+      "id": "n5",
+      "text": "ตรวจแบบทดสอบบทที่ 4 เสร็จแล้ว คะแนนเฉลี่ย 78%",
+      "type": "success",
+      "read": true,
+      "time": "2026-05-25T16:00:00.000Z"
+    }
+  ],
+  "settings": {
+    "teacherName": "ครูสมชาย",
+    "subject": "คณิตศาสตร์",
+    "school": "โรงเรียนตัวอย่าง",
+    "level": "ม.5"
+  },
+  "activities": {
+    "m5-1": [
+      {
+        "id": "96d4abcf-4242-495a-9b5b-2116546109ea",
+        "text": "ลบวิดีโอ \"อินทิกรัลพื้นฐาน\"",
+        "color": "#E05A3A",
+        "time": "2026-05-29T16:42:55.687Z"
+      },
+      {
+        "id": "0b399726-c7d8-4a66-8568-262c72ab9ba6",
+        "text": "ย้าย \"แบบฝึกหัดอินทิกรัล บทที่ 5\" → มอบหมายแล้ว",
+        "color": "#378ADD",
+        "time": "2026-05-28T16:30:19.919Z"
+      },
+      {
+        "id": "c380479f-eb30-4c80-b7c9-603f72053066",
+        "text": "ย้าย \"แบบฝึกหัดอินทิกรัล บทที่ 5\" → กำลังทำ",
+        "color": "#378ADD",
+        "time": "2026-05-28T16:30:18.723Z"
+      },
+      {
+        "id": "8c42c334-4fa6-4a30-b6a7-5846a884c7ac",
+        "text": "ย้าย \"โปรเจกต์สถิติเบื้องต้น\" → รอตรวจ",
+        "color": "#378ADD",
+        "time": "2026-05-26T17:56:24.354Z"
+      },
+      {
+        "id": "98d1cc75-d978-41ec-89c7-1f400ef6d399",
+        "text": "ย้าย \"โปรเจกต์สถิติเบื้องต้น\" → ตรวจแล้ว",
+        "color": "#378ADD",
+        "time": "2026-05-26T17:56:23.450Z"
+      },
+      {
+        "id": "a1",
+        "text": "สมหญิง ส่งแบบฝึกหัดอินทิกรัล เมื่อ 2 นาทีที่แล้ว",
+        "color": "#5DCAA5",
+        "time": "2026-05-27T10:00:00.000Z"
+      },
+      {
+        "id": "a2",
+        "text": "เพิ่มงาน \"แบบทดสอบ Limit\"",
+        "color": "#AFA9EC",
+        "time": "2026-05-27T09:00:00.000Z"
+      },
+      {
+        "id": "a3",
+        "text": "วิชัย ยังไม่ส่ง — เลยกำหนดแล้ว",
+        "color": "#EF9F27",
+        "time": "2026-05-27T08:30:00.000Z"
+      },
+      {
+        "id": "a4",
+        "text": "ตรวจ \"แบบทดสอบบทที่ 4\" เสร็จแล้ว",
+        "color": "#5DCAA5",
+        "time": "2026-05-26T15:00:00.000Z"
+      }
+    ],
+    "m5-2": [
+      {
+        "id": "a5",
+        "text": "เพิ่มงานแบบฝึกหัดเรขาคณิตวิเคราะห์",
+        "color": "#5DCAA5",
+        "time": "2026-05-27T09:00:00.000Z"
+      }
+    ],
+    "m5-3": [
+      {
+        "id": "a6",
+        "text": "เพิ่มโปรเจกต์ตรีโกณมิติ",
+        "color": "#5DCAA5",
+        "time": "2026-05-27T09:00:00.000Z"
+      }
+    ]
+  }
+}

@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClassFlow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.0.0/dist/tabler-icons.min.css">
+<style>
+:root {
+  --bg:#F4F3ED; --surface:#fff; --border:#E7E5DC; --text:#1A1A18; --muted:#6B6A65; --hint:#A8A7A2;
+  --teal:#1D9E75; --teal-lt:#E1F5EE; --teal-md:#9FE1CB; --teal-dk:#178860;
+  --amber:#BA7517; --amber-lt:#FAEEDA;
+  --red:#993C1D; --red-lt:#FAECE7;
+  --blue:#185FA5; --blue-lt:#E6F1FB;
+  --purple:#534AB7; --purple-lt:#EEEDFE;
+  --r:12px; --rs:8px;
+  --sh:0 1px 2px rgba(26,26,24,.04), 0 4px 12px rgba(26,26,24,.05);
+  --sh-md:0 2px 4px rgba(26,26,24,.05), 0 8px 24px rgba(26,26,24,.07);
+  --sh-lg:0 12px 40px rgba(26,26,24,.12);
+  --grad-teal:linear-gradient(135deg,#23B083 0%,#178860 100%);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Sarabun',sans-serif;background:
+  radial-gradient(1200px 600px at 80% -10%, rgba(29,158,117,.05), transparent 60%),
+  radial-gradient(900px 500px at -10% 110%, rgba(83,74,183,.04), transparent 55%),
+  var(--bg);
+  background-attachment:fixed;
+  color:var(--text);min-height:100vh;display:flex;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;letter-spacing:.005em}
+
+/* ── Sidebar ── */
+.sidebar{width:230px;flex-shrink:0;background:rgba(255,255,255,.82);backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:10}
+.sb-header{padding:18px 16px;border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:38px;height:38px;border-radius:11px;background:var(--grad-teal);display:flex;align-items:center;
+  justify-content:center;box-shadow:0 4px 12px rgba(29,158,117,.32)}
+.logo-icon i{color:#fff;font-size:20px}
+.logo-name{font-size:16px;font-weight:600;letter-spacing:-.01em}.logo-sub{font-size:11px;color:var(--muted)}
+.nav{padding:12px 8px;flex:1;overflow-y:auto}
+.nav-sec{font-size:10px;color:var(--hint);letter-spacing:.08em;text-transform:uppercase;padding:10px 10px 4px;font-weight:600}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:var(--rs);
+  font-size:14px;color:var(--muted);cursor:pointer;transition:background .18s,color .18s,box-shadow .18s;margin-bottom:2px;text-decoration:none;border:none;background:none;width:100%;font-family:'Sarabun',sans-serif;position:relative}
+.nav-item:hover{background:var(--bg);color:var(--text)}
+.nav-item.active{background:var(--teal-lt);color:var(--teal-dk);font-weight:600;box-shadow:inset 0 0 0 1px rgba(29,158,117,.12)}
+.nav-item.active::before{content:'';position:absolute;left:-8px;top:50%;transform:translateY(-50%);
+  width:3px;height:18px;border-radius:0 3px 3px 0;background:var(--teal)}
+.nav-item i{font-size:18px;flex-shrink:0}
+.nav-badge{margin-left:auto;background:var(--teal-lt);color:var(--teal-dk);font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600}
+.nav-badge.warn{background:var(--red-lt);color:var(--red)}
+
+/* ── Layout ── */
+.main{margin-left:230px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:rgba(255,255,255,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);padding:0 24px;height:58px;
+  display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:9}
+.topbar-title{font-size:15px;font-weight:600;flex:1;letter-spacing:-.01em}
+.class-tabs{display:flex;gap:4px;background:var(--bg);padding:3px;border-radius:9px;border:1px solid var(--border)}
+.class-tab{padding:5px 14px;border-radius:7px;font-size:13px;cursor:pointer;color:var(--muted);
+  border:1px solid transparent;background:transparent;font-family:'Sarabun',sans-serif;transition:all .18s}
+.class-tab:hover{color:var(--text)}
+.class-tab.active{background:var(--surface);color:var(--text);font-weight:600;border-color:var(--border);box-shadow:var(--sh)}
+.btn{padding:8px 15px;border-radius:9px;font-size:13px;cursor:pointer;font-family:'Sarabun',sans-serif;
+  display:inline-flex;align-items:center;gap:5px;border:none;transition:transform .12s,box-shadow .18s,background .18s,border-color .18s}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--grad-teal);color:#fff;font-weight:600;box-shadow:0 2px 8px rgba(29,158,117,.28)}
+.btn-primary:hover{box-shadow:0 4px 14px rgba(29,158,117,.38)}
+.btn-ghost{background:var(--surface);color:var(--muted);border:1px solid var(--border)}
+.btn-ghost:hover{background:var(--bg);color:var(--text);border-color:#d4d2c8}
+.btn-danger{background:var(--red-lt);color:var(--red);border:1px solid #f3c1b0}
+.btn-danger:hover{background:#f3c1b0}
+.btn-sm{padding:5px 11px;font-size:12px}
+
+/* ── Pages ── */
+.page{display:none}.page.active{display:block}
+.content{padding:20px 24px;flex:1}
+.page-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.page-hd h2{font-size:19px;font-weight:700;letter-spacing:-.02em}
+
+/* ── Right panel (kanban only) ── */
+.right-panel{width:260px;flex-shrink:0;background:rgba(255,255,255,.82);backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);border-left:1px solid var(--border);
+  position:fixed;right:0;top:0;bottom:0;overflow-y:auto;padding-top:58px}
+.panel-sec{padding:16px;border-bottom:1px solid var(--border)}
+.panel-sec-title{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:6px;letter-spacing:.01em}
+.panel-sec-title i{font-size:14px;color:var(--teal)}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stat-box{background:linear-gradient(160deg,#fff,var(--bg));border:1px solid var(--border);border-radius:10px;padding:12px 10px;text-align:center;box-shadow:var(--sh)}
+.stat-val{font-size:24px;font-weight:700;letter-spacing:-.02em}.stat-lbl{font-size:11px;color:var(--muted);margin-top:2px}
+.stu-item{display:flex;align-items:center;gap:9px;padding:6px 0;border-bottom:1px solid var(--border)}
+.stu-item:last-child{border:none}
+.stu-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.stu-name{font-size:13px;flex:1}.stu-score{font-size:12px;font-weight:600}
+.activity-item{display:flex;gap:9px;padding:6px 0;font-size:12px;color:var(--muted);line-height:1.45}
+.act-dot{width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.hi{color:var(--teal)}.md{color:var(--amber)}.lo{color:var(--red)}
+.main{margin-right:0}
+
+/* ── Kanban ── */
+.board-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.board-title{font-size:15px;font-weight:600}
+.filter-row{display:flex;gap:6px;flex-wrap:wrap}
+.chip{padding:5px 13px;border-radius:20px;font-size:12px;border:1px solid var(--border);cursor:pointer;color:var(--muted);background:var(--surface);transition:all .18s}
+.chip:hover{border-color:var(--teal-md);color:var(--text)}
+.chip.active{background:var(--teal-lt);color:var(--teal-dk);border-color:var(--teal-md);font-weight:600;box-shadow:0 1px 4px rgba(29,158,117,.15)}
+.board-date{font-size:12px;color:var(--hint);margin-left:auto}
+.kanban{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;align-items:flex-start}
+.kanban::-webkit-scrollbar{height:5px}.kanban::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.col{flex-shrink:0;width:230px;background:linear-gradient(180deg,#EEEDE8,#E9E8E2);border-radius:14px;overflow:hidden;border:1px solid rgba(0,0,0,.03)}
+.col-header{padding:11px 13px;display:flex;align-items:center;gap:8px}
+.col-dot{width:9px;height:9px;border-radius:50%;box-shadow:0 0 0 3px rgba(0,0,0,.04)}.col-name{font-size:13px;font-weight:600;flex:1}
+.col-count{font-size:11px;color:var(--muted);background:var(--surface);padding:2px 8px;border-radius:20px;font-weight:600;box-shadow:var(--sh)}
+.col-body{padding:8px;display:flex;flex-direction:column;gap:8px;min-height:180px;transition:background .15s}
+.card{background:var(--surface);border-radius:11px;padding:12px 13px;cursor:grab;border:1px solid var(--border);
+  transition:transform .18s,border-color .18s,box-shadow .18s,opacity .15s;position:relative;box-shadow:0 1px 2px rgba(26,26,24,.04)}
+.card:hover{border-color:#d4d2c8;box-shadow:var(--sh-md);transform:translateY(-2px)}.card.late{border-left:3px solid var(--red)}
+.card.dragging{opacity:.4;cursor:grabbing;transform:rotate(1.5deg) scale(1.02);box-shadow:var(--sh-lg)}
+.col-body.drag-over{background:rgba(29,158,117,.08);outline:2px dashed var(--teal-md);outline-offset:-3px;border-radius:8px}
+.card-top{display:flex;align-items:flex-start;gap:6px;margin-bottom:6px}
+.card-title{font-size:13px;font-weight:500;flex:1;line-height:1.45}
+.tag{font-size:10px;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;font-weight:500}
+.tag-quiz{background:var(--purple-lt);color:var(--purple)}.tag-essay{background:var(--red-lt);color:var(--red)}
+.tag-project{background:var(--blue-lt);color:var(--blue)}.tag-exercise{background:var(--teal-lt);color:var(--teal)}
+.card-delete{opacity:0;border:none;background:none;color:var(--hint);cursor:pointer;padding:1px 3px;border-radius:4px;
+  transition:opacity .15s,color .15s;flex-shrink:0;font-size:14px;line-height:1}
+.card:hover .card-delete{opacity:1}.card-delete:hover{color:var(--red)}
+.progress-bar{height:3px;background:var(--border);border-radius:2px;margin-bottom:8px}
+.progress-fill{height:100%;border-radius:2px;transition:width .4s}
+.card-footer{display:flex;align-items:center;gap:6px}
+.card-due{font-size:11px;color:var(--hint);display:flex;align-items:center;gap:3px}
+.card-due i{font-size:12px}.card-due.late-text{color:var(--red);font-weight:500}.card-due.done-text{color:var(--teal)}
+.card-pts{font-size:11px;color:var(--hint);display:flex;align-items:center;gap:3px;margin-left:4px}
+.card-pts i{font-size:11px}
+.avatars{margin-left:auto;display:flex}
+.av{width:20px;height:20px;border-radius:50%;border:1.5px solid #fff;font-size:9px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;margin-left:-5px;flex-shrink:0}
+.av-t{background:#9FE1CB;color:#085041}.av-p{background:#CECBF6;color:#26215C}
+.av-c{background:#F5C4B3;color:#4A1B0C}.av-a{background:#FAC775;color:#412402}.av-b{background:#B5D4F4;color:#042C53}
+.add-card{display:flex;align-items:center;gap:6px;padding:8px;border-radius:9px;font-size:12px;
+  color:var(--hint);cursor:pointer;border:1px dashed #cfcdc4;background:rgba(255,255,255,.4);
+  font-family:'Sarabun',sans-serif;transition:all .18s}
+.add-card:hover{color:var(--teal-dk);border-color:var(--teal-md);background:rgba(255,255,255,.8)}
+
+/* ── Materials ── */
+.mat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.mat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;
+  display:flex;flex-direction:column;gap:8px;position:relative;box-shadow:var(--sh);transition:transform .18s,box-shadow .18s}
+.mat-card:hover{transform:translateY(-3px);box-shadow:var(--sh-md)}
+.mat-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.mat-icon.pdf{background:#FAECE7;color:var(--red)}.mat-icon.doc{background:var(--blue-lt);color:var(--blue)}
+.mat-icon.image{background:var(--teal-lt);color:var(--teal)}.mat-icon.link{background:var(--purple-lt);color:var(--purple)}
+.mat-title{font-size:14px;font-weight:500}.mat-sub{font-size:12px;color:var(--muted)}
+.mat-desc{font-size:12px;color:var(--hint);line-height:1.5}
+.mat-footer{display:flex;align-items:center;justify-content:space-between;margin-top:4px}
+.mat-actions{display:flex;gap:6px}
+
+/* ── Videos ── */
+.vid-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.vid-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);transition:transform .18s,box-shadow .18s}
+.vid-card:hover{transform:translateY(-3px);box-shadow:var(--sh-md)}
+.vid-thumb{width:100%;aspect-ratio:16/9;border:none;display:block;background:#000}
+.vid-thumb-placeholder{width:100%;aspect-ratio:16/9;background:#EDECE8;display:flex;align-items:center;
+  justify-content:center;color:var(--hint);font-size:32px}
+.vid-body{padding:12px}
+.vid-title{font-size:14px;font-weight:500;margin-bottom:4px}
+.vid-meta{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-bottom:6px}
+.vid-desc{font-size:12px;color:var(--hint);line-height:1.5}
+.vid-footer{display:flex;justify-content:space-between;align-items:center;padding:0 12px 12px}
+
+/* ── Grades ── */
+.grade-wrap{overflow-x:auto}
+.grade-table{width:100%;border-collapse:collapse;font-size:13px}
+.grade-table th,.grade-table td{padding:8px 12px;border:1px solid var(--border);text-align:center;white-space:nowrap}
+.grade-table th{background:var(--bg);font-weight:600;font-size:12px}
+.grade-table td:first-child{text-align:left}
+.grade-table tr:hover td{background:#fafaf8}
+.score-hi{color:var(--teal);font-weight:600}.score-md{color:var(--amber);font-weight:600}.score-lo{color:var(--red);font-weight:600}
+
+/* ── Schedule ── */
+.schedule-wrap{overflow-x:auto}
+.schedule-grid{display:grid;grid-template-columns:100px repeat(5,1fr);gap:0;min-width:700px}
+.sch-hd{background:var(--bg);padding:10px;font-size:13px;font-weight:600;text-align:center;
+  border:1px solid var(--border);border-bottom:2px solid var(--border)}
+.sch-time{background:var(--bg);padding:10px;font-size:12px;color:var(--muted);text-align:center;
+  border:1px solid var(--border);display:flex;align-items:center;justify-content:center}
+.sch-slot{border:1px solid var(--border);padding:8px;min-height:64px;cursor:pointer;transition:background .12s;
+  display:flex;flex-direction:column;gap:3px}
+.sch-slot:hover{background:#fafaf8}
+.sch-slot.filled{background:var(--teal-lt)}
+.sch-slot .slot-sub{font-size:13px;font-weight:500;color:var(--teal)}
+.sch-slot .slot-room{font-size:11px;color:var(--muted)}
+.sch-slot .slot-cls{font-size:10px;background:var(--teal-md);color:#085041;padding:1px 6px;border-radius:10px;display:inline-block;width:fit-content}
+.sch-empty{font-size:11px;color:var(--hint)}
+
+/* ── Notifications ── */
+.notif-list{display:flex;flex-direction:column;gap:8px;max-width:680px}
+.notif-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  padding:15px 17px;display:flex;gap:12px;align-items:flex-start;box-shadow:var(--sh);transition:transform .18s,box-shadow .18s}
+.notif-item:hover{transform:translateX(2px);box-shadow:var(--sh-md)}
+.notif-item.unread{border-left:3px solid var(--teal)}
+.notif-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.notif-body{flex:1}.notif-text{font-size:14px;line-height:1.5}
+.notif-time{font-size:11px;color:var(--hint);margin-top:4px}
+.notif-actions{display:flex;gap:6px;flex-shrink:0}
+.notif-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.unread-count{font-size:13px;color:var(--muted)}
+
+/* ── Students ── */
+.stu-table-wrap{overflow-x:auto}
+.stu-table{width:100%;border-collapse:collapse;font-size:13px}
+.stu-table th,.stu-table td{padding:10px 14px;border-bottom:1px solid var(--border);text-align:left}
+.stu-table th{font-size:12px;font-weight:600;color:var(--muted);background:var(--bg)}
+.stu-table tr:hover td{background:#fafaf8}
+.stu-av-sm{width:28px;height:28px;border-radius:50%;font-size:11px;font-weight:600;
+  display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.stu-row-name{display:flex;align-items:center;gap:8px}
+.score-bar-wrap{display:flex;align-items:center;gap:8px}
+.score-bar{height:6px;background:var(--border);border-radius:3px;width:80px;overflow:hidden}
+.score-bar-fill{height:100%;border-radius:3px}
+
+/* ── Settings ── */
+.settings-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;max-width:720px}
+.settings-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px;box-shadow:var(--sh)}
+.settings-card h3{font-size:14px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.settings-card h3 i{color:var(--teal);font-size:18px}
+
+/* ── Shared form ── */
+.form-group{margin-bottom:14px}
+.form-group label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:5px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 13px;border:1.5px solid var(--border);
+  border-radius:9px;font-family:'Sarabun',sans-serif;font-size:14px;background:var(--bg);color:var(--text);
+  outline:none;transition:border-color .15s,box-shadow .15s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(29,158,117,.12)}
+.form-group textarea{resize:vertical;min-height:70px}
+
+/* ── Modal ── */
+.overlay{position:fixed;inset:0;background:rgba(26,26,24,.4);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+  z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;animation:overlay-in .2s ease}
+@keyframes overlay-in{from{opacity:0}to{opacity:1}}
+.modal{background:var(--surface);border-radius:18px;padding:26px;width:100%;max-width:440px;
+  box-shadow:var(--sh-lg);border:1px solid rgba(255,255,255,.6);animation:modal-in .24s cubic-bezier(.2,.8,.3,1)}
+@keyframes modal-in{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
+.modal h3{font-size:17px;font-weight:700;margin-bottom:18px;letter-spacing:-.01em}
+.modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:22px}
+.hidden{display:none!important}
+
+/* ── Toast ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(8px);background:#1a1a18;color:#fff;
+  padding:11px 22px;border-radius:10px;font-size:13px;z-index:200;opacity:0;transition:opacity .25s,transform .25s;
+  pointer-events:none;box-shadow:var(--sh-lg)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sb-header">
+    <div class="logo">
+      <div class="logo-icon"><i class="ti ti-school"></i></div>
+      <div>
+        <div class="logo-name" id="sb-appname">ClassFlow</div>
+        <div class="logo-sub" id="sb-sub">ครูสมชาย · ม.5</div>
+      </div>
+    </div>
+  </div>
+  <nav class="nav">
+    <div class="nav-sec">ห้องเรียน</div>
+    <button class="nav-item active" data-page="kanban"><i class="ti ti-layout-kanban"></i> บอร์ดการบ้าน <span class="nav-badge" id="task-count">0</span></button>
+    <button class="nav-item" data-page="materials"><i class="ti ti-book"></i> สื่อการสอน</button>
+    <button class="nav-item" data-page="videos"><i class="ti ti-video"></i> วิดีโอบทเรียน</button>
+    <button class="nav-item" data-page="grades"><i class="ti ti-chart-bar"></i> ผลการเรียน</button>
+    <div class="nav-sec" style="margin-top:8px">เครื่องมือ</div>
+    <button class="nav-item" data-page="schedule"><i class="ti ti-calendar"></i> ตารางเรียน</button>
+    <button class="nav-item" data-page="notifications"><i class="ti ti-bell"></i> แจ้งเตือน <span class="nav-badge warn hidden" id="notif-badge">0</span></button>
+    <button class="nav-item" data-page="students"><i class="ti ti-users"></i> นักเรียน</button>
+    <button class="nav-item" data-page="settings"><i class="ti ti-settings"></i> ตั้งค่า</button>
+  </nav>
+</aside>
+
+<div class="main">
+  <header class="topbar">
+    <div class="topbar-title" id="topbar-title">บอร์ดการบ้าน</div>
+    <div class="class-tabs" id="class-tabs"></div>
+    <button class="btn btn-primary hidden" id="topbar-add-task" onclick="openTaskModal()"><i class="ti ti-plus"></i> เพิ่มงาน</button>
+    <button class="btn btn-primary hidden" id="topbar-add-mat" onclick="openMatModal()"><i class="ti ti-plus"></i> เพิ่มสื่อ</button>
+    <button class="btn btn-primary hidden" id="topbar-add-vid" onclick="openVidModal()"><i class="ti ti-plus"></i> เพิ่มวิดีโอ</button>
+    <button class="btn btn-primary hidden" id="topbar-add-stu" onclick="openStuModal()"><i class="ti ti-plus"></i> เพิ่มนักเรียน</button>
+    <div style="display:flex;align-items:center;gap:8px;margin-left:4px;padding-left:12px;border-left:1px solid var(--border)">
+      <span style="font-size:13px;color:var(--muted)" id="topbar-username"></span>
+      <button class="btn btn-ghost btn-sm" onclick="logout()" title="ออกจากระบบ"><i class="ti ti-logout"></i></button>
+    </div>
+  </header>
+
+  <!-- ── Page: Kanban ── -->
+  <div class="page active content" id="page-kanban">
+    <div class="board-header">
+      <div class="board-title" id="board-title">สัปดาห์ที่ 18 — วิชาคณิตศาสตร์</div>
+      <div class="filter-row">
+        <span class="chip active" data-filter="all">ทั้งหมด</span>
+        <span class="chip" data-filter="quiz">แบบทดสอบ</span>
+        <span class="chip" data-filter="project">โปรเจกต์</span>
+        <span class="chip" data-filter="essay">เรียงความ</span>
+        <span class="chip" data-filter="exercise">แบบฝึก</span>
+      </div>
+      <div class="board-date" id="today-date"></div>
+    </div>
+    <div class="kanban" id="kanban"></div>
+  </div>
+
+  <!-- ── Page: Materials ── -->
+  <div class="page content" id="page-materials">
+    <div class="page-hd"><h2>สื่อการสอน</h2></div>
+    <div class="mat-grid" id="mat-grid"></div>
+  </div>
+
+  <!-- ── Page: Videos ── -->
+  <div class="page content" id="page-videos">
+    <div class="page-hd"><h2>วิดีโอบทเรียน</h2></div>
+    <div class="vid-grid" id="vid-grid"></div>
+  </div>
+
+  <!-- ── Page: Grades ── -->
+  <div class="page content" id="page-grades">
+    <div class="page-hd"><h2>ผลการเรียน</h2></div>
+    <div class="grade-wrap"><table class="grade-table" id="grade-table"></table></div>
+  </div>
+
+  <!-- ── Page: Schedule ── -->
+  <div class="page content" id="page-schedule">
+    <div class="page-hd"><h2>ตารางเรียน</h2><span style="font-size:12px;color:var(--hint)">คลิกช่องเพื่อแก้ไข</span></div>
+    <div class="schedule-wrap"><div class="schedule-grid" id="schedule-grid"></div></div>
+  </div>
+
+  <!-- ── Page: Notifications ── -->
+  <div class="page content" id="page-notifications">
+    <div class="notif-bar">
+      <h2 style="font-size:17px;font-weight:600">แจ้งเตือน</h2>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="unread-count" id="unread-label"></span>
+        <button class="btn btn-ghost btn-sm" onclick="markAllRead()">อ่านทั้งหมด</button>
+      </div>
+    </div>
+    <div class="notif-list" id="notif-list"></div>
+  </div>
+
+  <!-- ── Page: Students ── -->
+  <div class="page content" id="page-students">
+    <div class="page-hd"><h2>นักเรียน</h2></div>
+    <div class="stu-table-wrap"><table class="stu-table" id="stu-table"></table></div>
+  </div>
+
+  <!-- ── Page: Settings ── -->
+  <div class="page content" id="page-settings">
+    <div class="page-hd"><h2>ตั้งค่า</h2></div>
+    <div class="settings-grid">
+      <div class="settings-card">
+        <h3><i class="ti ti-user"></i> ข้อมูลครู</h3>
+        <div class="form-group"><label>ชื่อครู</label><input id="set-teacher" type="text"></div>
+        <div class="form-group"><label>วิชาที่สอน</label><input id="set-subject" type="text"></div>
+        <button class="btn btn-primary btn-sm" onclick="saveSettings()"><i class="ti ti-check"></i> บันทึก</button>
+      </div>
+      <div class="settings-card">
+        <h3><i class="ti ti-school"></i> ข้อมูลโรงเรียน</h3>
+        <div class="form-group"><label>ชื่อโรงเรียน</label><input id="set-school" type="text"></div>
+        <div class="form-group"><label>ระดับชั้น</label><input id="set-level" type="text"></div>
+        <button class="btn btn-primary btn-sm" onclick="saveSettings()"><i class="ti ti-check"></i> บันทึก</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Right panel ── -->
+<aside class="right-panel" id="right-panel">
+  <div class="panel-sec">
+    <div class="panel-sec-title"><i class="ti ti-chart-pie"></i> ภาพรวมห้องเรียน</div>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="stat-val" id="student-count">—</div><div class="stat-lbl">นักเรียน</div></div>
+      <div class="stat-box"><div class="stat-val" id="total-tasks">—</div><div class="stat-lbl">งานทั้งหมด</div></div>
+      <div class="stat-box"><div class="stat-val hi" id="ontime-rate">—</div><div class="stat-lbl">ส่งตรงเวลา</div></div>
+      <div class="stat-box"><div class="stat-val md" id="late-count">—</div><div class="stat-lbl">เลยกำหนด</div></div>
+    </div>
+  </div>
+  <div class="panel-sec">
+    <div class="panel-sec-title"><i class="ti ti-trophy"></i> คะแนนสูงสุด</div>
+    <div id="student-rows"></div>
+  </div>
+  <div class="panel-sec">
+    <div class="panel-sec-title"><i class="ti ti-history"></i> กิจกรรมล่าสุด</div>
+    <div id="activity-feed"></div>
+  </div>
+</aside>
+
+<!-- ── Task modal ── -->
+<div class="overlay hidden" id="task-modal" onclick="closeModal('task-modal',event)">
+  <div class="modal">
+    <h3>เพิ่มงานใหม่</h3>
+    <div class="form-group"><label>ชื่องาน</label><input id="f-title" type="text" placeholder="เช่น แบบฝึกหัดบทที่ 6"></div>
+    <div class="form-group"><label>ประเภท</label>
+      <select id="f-type"><option value="exercise">แบบฝึกหัด</option><option value="quiz">แบบทดสอบ</option><option value="essay">เรียงความ</option><option value="project">โปรเจกต์</option></select></div>
+    <div class="form-group"><label>วันครบกำหนด</label><input id="f-due" type="text" placeholder="เช่น 5 มิ.ย."></div>
+    <div class="form-group"><label>คะแนน</label><input id="f-pts" type="number" value="20" min="1" max="100"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('task-modal')">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="submitTask()"><i class="ti ti-check"></i> บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Material modal ── -->
+<div class="overlay hidden" id="mat-modal" onclick="closeModal('mat-modal',event)">
+  <div class="modal">
+    <h3>เพิ่มสื่อการสอน</h3>
+    <div class="form-group"><label>ชื่อสื่อ</label><input id="mf-title" type="text" placeholder="เช่น สรุปสูตรอินทิกรัล"></div>
+    <div class="form-group"><label>วิชา</label><input id="mf-subject" type="text" placeholder="เช่น คณิตศาสตร์"></div>
+    <div class="form-group"><label>ประเภท</label>
+      <select id="mf-type"><option value="pdf">PDF</option><option value="doc">เอกสาร</option><option value="image">รูปภาพ</option><option value="link">ลิงก์</option></select></div>
+    <div class="form-group"><label>URL / ลิงก์</label><input id="mf-url" type="text" placeholder="https://..."></div>
+    <div class="form-group"><label>คำอธิบาย</label><textarea id="mf-desc" placeholder="รายละเอียดสื่อ..."></textarea></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('mat-modal')">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="submitMaterial()"><i class="ti ti-check"></i> บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Video modal ── -->
+<div class="overlay hidden" id="vid-modal" onclick="closeModal('vid-modal',event)">
+  <div class="modal">
+    <h3>เพิ่มวิดีโอบทเรียน</h3>
+    <div class="form-group"><label>ชื่อวิดีโอ</label><input id="vf-title" type="text" placeholder="เช่น อินทิกรัลพื้นฐาน"></div>
+    <div class="form-group"><label>YouTube Embed URL</label><input id="vf-url" type="text" placeholder="https://www.youtube.com/embed/..."></div>
+    <div class="form-group"><label>ความยาว</label><input id="vf-dur" type="text" placeholder="เช่น 18:30"></div>
+    <div class="form-group"><label>คำอธิบาย</label><textarea id="vf-desc" placeholder="รายละเอียดวิดีโอ..."></textarea></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('vid-modal')">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="submitVideo()"><i class="ti ti-check"></i> บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Student modal ── -->
+<div class="overlay hidden" id="stu-modal" onclick="closeModal('stu-modal',event)">
+  <div class="modal">
+    <h3>เพิ่มนักเรียน</h3>
+    <div class="form-group"><label>ชื่อ-นามสกุล</label><input id="sf-name" type="text" placeholder="เช่น สมใจ ดีมาก"></div>
+    <div class="form-group"><label>ตัวย่อ (2 ตัวอักษร)</label><input id="sf-init" type="text" placeholder="เช่น สม" maxlength="2"></div>
+    <div class="form-group"><label>คะแนนเริ่มต้น (%)</label><input id="sf-score" type="number" value="70" min="0" max="100"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('stu-modal')">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="submitStudent()"><i class="ti ti-check"></i> บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Schedule slot modal ── -->
+<div class="overlay hidden" id="sch-modal" onclick="closeModal('sch-modal',event)">
+  <div class="modal">
+    <h3 id="sch-modal-title">แก้ไขตารางเรียน</h3>
+    <input type="hidden" id="sch-day-idx"><input type="hidden" id="sch-period-idx">
+    <div class="form-group"><label>วิชา</label><input id="schf-subject" type="text" placeholder="เช่น คณิตศาสตร์"></div>
+    <div class="form-group"><label>ห้อง</label><input id="schf-room" type="text" placeholder="เช่น 301"></div>
+    <div class="form-group"><label>ห้องเรียน</label>
+      <select id="schf-class"><option value="">— ว่าง —</option></select></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('sch-modal')">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="saveSlot()"><i class="ti ti-check"></i> บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── State ─────────────────────────────────────────────────────────────────────
+let tasks        = {};
+let classes      = [];
+let timetable    = [];
+let activeFilter = 'all';
+let currentClass = 'm5-1';
+let currentPage  = 'kanban';
+let targetCol    = 'assigned';
+let draggingId   = null;
+
+const COLS = [
+  { key:'assigned',    name:'มอบหมายแล้ว', color:'#AFA9EC', prog:'#AFA9EC' },
+  { key:'in_progress', name:'กำลังทำ',      color:'#EF9F27', prog:'#EF9F27' },
+  { key:'review',      name:'รอตรวจ',       color:'#378ADD', prog:'#378ADD' },
+  { key:'done',        name:'ตรวจแล้ว',     color:'#5DCAA5', prog:'#5DCAA5' },
+];
+const TAG_LABELS = { quiz:'แบบทดสอบ', essay:'เรียงความ', project:'โปรเจกต์', exercise:'แบบฝึก' };
+const AV_CLASSES = ['av-t','av-p','av-c','av-a','av-b'];
+const MAT_ICONS  = { pdf:'ti-file-type-pdf', doc:'ti-file-text', image:'ti-photo', link:'ti-link' };
+const PAGE_TITLES = {
+  kanban:'บอร์ดการบ้าน', materials:'สื่อการสอน', videos:'วิดีโอบทเรียน',
+  grades:'ผลการเรียน', schedule:'ตารางเรียน', notifications:'แจ้งเตือน',
+  students:'นักเรียน', settings:'ตั้งค่า'
+};
+
+// ── Navigation ────────────────────────────────────────────────────────────────
+document.querySelectorAll('.nav-item[data-page]').forEach(btn => {
+  btn.addEventListener('click', () => showPage(btn.dataset.page));
+});
+
+function showPage(page) {
+  currentPage = page;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('.nav-item[data-page]').forEach(b => {
+    b.classList.toggle('active', b.dataset.page === page);
+  });
+  document.getElementById('topbar-title').textContent = PAGE_TITLES[page] || page;
+  const rp = document.getElementById('right-panel');
+  const main = document.querySelector('.main');
+  if (page === 'kanban') {
+    rp.style.display = 'block';
+    main.style.marginRight = '260px';
+  } else {
+    rp.style.display = 'none';
+    main.style.marginRight = '0';
+  }
+
+  // topbar buttons
+  ['task','mat','vid','stu'].forEach(k =>
+    document.getElementById('topbar-add-' + k).classList.add('hidden'));
+  document.getElementById('class-tabs').style.display = 'none';
+  if (page === 'kanban') {
+    document.getElementById('topbar-add-task').classList.remove('hidden');
+    document.getElementById('class-tabs').style.display = '';
+  } else if (page === 'materials') {
+    document.getElementById('topbar-add-mat').classList.remove('hidden');
+    document.getElementById('class-tabs').style.display = '';
+  } else if (page === 'videos') {
+    document.getElementById('topbar-add-vid').classList.remove('hidden');
+    document.getElementById('class-tabs').style.display = '';
+  } else if (page === 'students') {
+    document.getElementById('topbar-add-stu').classList.remove('hidden');
+    document.getElementById('class-tabs').style.display = '';
+  } else if (page === 'grades') {
+    document.getElementById('class-tabs').style.display = '';
+  }
+  loadCurrentPage();
+}
+
+function loadCurrentPage() {
+  if (currentPage === 'kanban')        loadKanban();
+  else if (currentPage === 'materials')  loadMaterials();
+  else if (currentPage === 'videos')     loadVideos();
+  else if (currentPage === 'grades')     loadGrades();
+  else if (currentPage === 'schedule')   loadSchedule();
+  else if (currentPage === 'notifications') loadNotifications();
+  else if (currentPage === 'students')   loadStudentsPage();
+  else if (currentPage === 'settings')   loadSettings();
+}
+
+// ── Auth ──────────────────────────────────────────────────────────────────────
+async function logout() {
+  await fetch('/api/auth/logout', { method:'POST' });
+  location.replace('/login.html');
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+async function init() {
+  // Guard: redirect to login if not authenticated as teacher
+  try {
+    const r = await fetch('/api/auth/me');
+    if (!r.ok) { location.replace('/login.html'); return; }
+    const me = await r.json();
+    if (me.role !== 'teacher') { location.replace('/login.html'); return; }
+    document.getElementById('topbar-username').textContent = me.name || '';
+  } catch(e) { location.replace('/login.html'); return; }
+
+  document.getElementById('today-date').textContent =
+    new Date().toLocaleDateString('th-TH', { year:'numeric', month:'short', day:'numeric' });
+  await loadClasses();
+  showPage('kanban');
+  loadNotifBadge();
+}
+
+// ── Classes ───────────────────────────────────────────────────────────────────
+async function loadClasses() {
+  try {
+    const res = await fetch('/api/classes');
+    classes   = await res.json();
+    renderClassTabs();
+    populateSchClassSelect();
+  } catch(e) {}
+}
+
+function renderClassTabs() {
+  document.getElementById('class-tabs').innerHTML = classes.map(c =>
+    `<button class="class-tab ${c.id === currentClass ? 'active' : ''}"
+             onclick="switchClass('${c.id}')">${c.name}</button>`
+  ).join('');
+}
+
+async function switchClass(classId) {
+  currentClass = classId;
+  renderClassTabs();
+  loadCurrentPage();
+  if (currentPage === 'kanban') await Promise.all([loadStats(), loadActivities(), loadStudentPanel()]);
+}
+
+// ── Kanban ────────────────────────────────────────────────────────────────────
+async function loadKanban() {
+  try {
+    const res = await fetch(`/api/classes/${currentClass}/tasks`);
+    tasks     = await res.json();
+    renderBoard();
+    document.getElementById('task-count').textContent = Object.values(tasks).flat().length;
+  } catch(e) { showToast('ไม่สามารถโหลดข้อมูลได้'); }
+  await Promise.all([loadStats(), loadActivities(), loadStudentPanel()]);
+}
+
+async function loadStats() {
+  try {
+    const res   = await fetch(`/api/classes/${currentClass}/stats`);
+    const stats = await res.json();
+    document.getElementById('student-count').textContent = stats.studentCount;
+    document.getElementById('total-tasks').textContent   = stats.totalTasks;
+    document.getElementById('late-count').textContent    = stats.lateTasks;
+    document.getElementById('ontime-rate').textContent   = stats.ontimeRate + '%';
+  } catch(e) {}
+}
+
+async function loadActivities() {
+  try {
+    const res  = await fetch(`/api/classes/${currentClass}/activities`);
+    const acts = await res.json();
+    document.getElementById('activity-feed').innerHTML = acts.length
+      ? acts.map(a => `<div class="activity-item"><div class="act-dot" style="background:${a.color}"></div>${a.text}</div>`).join('')
+      : '<div class="activity-item"><div class="act-dot" style="background:#ccc"></div>ยังไม่มีกิจกรรม</div>';
+  } catch(e) {}
+}
+
+async function loadStudentPanel() {
+  try {
+    const res  = await fetch(`/api/classes/${currentClass}/students`);
+    const stus = await res.json();
+    const cls  = s => s.score >= 80 ? 'hi' : s.score >= 70 ? 'md' : 'lo';
+    document.getElementById('student-rows').innerHTML = stus.slice(0, 5).map(s =>
+      `<div class="stu-item">
+         <div class="stu-av ${s.avatarClass}">${s.initials}</div>
+         <div class="stu-name">${s.name}</div>
+         <div class="stu-score ${cls(s)}">${s.score}%</div>
+       </div>`
+    ).join('') || '<div style="font-size:12px;color:var(--hint)">ยังไม่มีข้อมูล</div>';
+  } catch(e) {}
+}
+
+function renderBoard() {
+  const board = document.getElementById('kanban');
+  board.innerHTML = '';
+  for (const col of COLS) {
+    const items = (tasks[col.key] || []).filter(t => activeFilter === 'all' || t.type === activeFilter);
+    board.appendChild(buildCol(col, items));
+  }
+}
+
+function buildCol(col, items) {
+  const div = document.createElement('div');
+  div.className = 'col';
+  div.innerHTML = `
+    <div class="col-header">
+      <div class="col-dot" style="background:${col.color}"></div>
+      <div class="col-name">${col.name}</div>
+      <div class="col-count">${items.length}</div>
+    </div>
+    <div class="col-body" id="col-${col.key}"
+         ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="drop(event,'${col.key}')">
+      ${items.map(t => buildCard(t, col)).join('')}
+      <button class="add-card" onclick="openTaskModalInCol('${col.key}')"><i class="ti ti-plus"></i> เพิ่มงาน</button>
+    </div>`;
+  return div;
+}
+
+function buildCard(t, col) {
+  const te  = t.title.replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+  const avs = (t.students || []).slice(0, 4).map((s, i) =>
+    `<div class="av ${AV_CLASSES[i % AV_CLASSES.length]}">${s}</div>`).join('');
+  const prog = `<div class="progress-bar"><div class="progress-fill" style="width:${t.progress||0}%;background:${col.prog}"></div></div>`;
+  let dueHtml = '';
+  if      (t.late)      dueHtml = `<div class="card-due late-text"><i class="ti ti-clock"></i> เลยกำหนด!</div>`;
+  else if (t.avg)       dueHtml = `<div class="card-due done-text"><i class="ti ti-check"></i> เฉลี่ย ${t.avg}</div>`;
+  else if (t.submitted) dueHtml = `<div class="card-due"><i class="ti ti-users"></i> ${t.submitted} ส่งแล้ว</div>`;
+  else if (t.dueDate)   dueHtml = `<div class="card-due"><i class="ti ti-clock"></i> ${t.dueDate}</div>`;
+  return `
+    <div class="card ${t.late ? 'late' : ''}" draggable="true"
+         ondragstart="dragStart(event,'${t.id}')" ondragend="dragEnd(event)">
+      <div class="card-top">
+        <div class="card-title">${t.title}</div>
+        <span class="tag tag-${t.type}">${TAG_LABELS[t.type] || t.type}</span>
+        <button class="card-delete" title="ลบ" onclick="event.stopPropagation();deleteTask('${t.id}','${te}')">
+          <i class="ti ti-x"></i></button>
+      </div>
+      ${(t.progress > 0 || col.key !== 'assigned') ? prog : ''}
+      <div class="card-footer">
+        ${dueHtml}
+        ${t.points ? `<div class="card-pts"><i class="ti ti-star"></i> ${t.points}</div>` : ''}
+        <div class="avatars">${avs}</div>
+      </div>
+    </div>`;
+}
+
+// Drag-drop
+function dragStart(e, id) { draggingId = id; e.dataTransfer.effectAllowed = 'move'; setTimeout(() => e.target.classList.add('dragging'), 0); }
+function dragEnd(e)        { e.target.classList.remove('dragging'); }
+function dragOver(e)       { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+function dragLeave(e)      { e.currentTarget.classList.remove('drag-over'); }
+function drop(e, colKey)   { e.preventDefault(); e.currentTarget.classList.remove('drag-over'); if (draggingId) moveTask(draggingId, colKey); draggingId = null; }
+
+async function moveTask(id, newStatus) {
+  try {
+    await fetch(`/api/tasks/${id}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ status: newStatus }) });
+    loadKanban();
+  } catch(e) { showToast('ไม่สามารถย้ายงานได้'); }
+}
+
+async function deleteTask(id, title) {
+  if (!confirm(`ลบงาน "${title}" ?`)) return;
+  await fetch(`/api/tasks/${id}`, { method:'DELETE' });
+  loadKanban();
+  showToast('ลบงานเรียบร้อย');
+}
+
+// Filters
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    activeFilter = chip.dataset.filter;
+    renderBoard();
+  });
+});
+
+// Task modal
+function openTaskModal()         { targetCol = 'assigned'; document.getElementById('task-modal').classList.remove('hidden'); document.getElementById('f-title').focus(); }
+function openTaskModalInCol(col) { targetCol = col;        document.getElementById('task-modal').classList.remove('hidden'); document.getElementById('f-title').focus(); }
+
+async function submitTask() {
+  const title   = document.getElementById('f-title').value.trim();
+  const type    = document.getElementById('f-type').value;
+  const dueDate = document.getElementById('f-due').value.trim();
+  const points  = parseInt(document.getElementById('f-pts').value) || 10;
+  if (!title) { document.getElementById('f-title').focus(); return; }
+  await fetch(`/api/classes/${currentClass}/tasks`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({ title, type, dueDate, points, status: targetCol })
+  });
+  closeModal('task-modal');
+  document.getElementById('f-title').value = '';
+  document.getElementById('f-due').value   = '';
+  document.getElementById('f-pts').value   = '20';
+  loadKanban();
+  showToast('เพิ่มงานเรียบร้อย ✓');
+}
+
+// ── Materials ─────────────────────────────────────────────────────────────────
+async function loadMaterials() {
+  try {
+    const res  = await fetch(`/api/classes/${currentClass}/materials`);
+    const mats = await res.json();
+    document.getElementById('mat-grid').innerHTML = mats.length
+      ? mats.map(m => `
+          <div class="mat-card">
+            <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:6px">
+              <div class="mat-icon ${m.type}"><i class="ti ${MAT_ICONS[m.type] || 'ti-file'}"></i></div>
+              <div style="flex:1">
+                <div class="mat-title">${m.title}</div>
+                <div class="mat-sub">${m.subject}</div>
+              </div>
+            </div>
+            <div class="mat-desc">${m.description}</div>
+            <div class="mat-footer">
+              ${m.url && m.url !== '#' ? `<a href="${m.url}" target="_blank" class="btn btn-ghost btn-sm"><i class="ti ti-external-link"></i> เปิด</a>` : '<span></span>'}
+              <button class="btn btn-danger btn-sm" onclick="deleteMaterial('${m.id}','${m.title.replace(/'/g,'&#39;')}')">
+                <i class="ti ti-trash"></i></button>
+            </div>
+          </div>`)
+        .join('')
+      : '<div style="color:var(--hint);font-size:14px">ยังไม่มีสื่อการสอน — กด "+ เพิ่มสื่อ" เพื่อเพิ่ม</div>';
+  } catch(e) {}
+}
+
+function openMatModal() { document.getElementById('mat-modal').classList.remove('hidden'); document.getElementById('mf-title').focus(); }
+
+async function submitMaterial() {
+  const title   = document.getElementById('mf-title').value.trim();
+  const subject = document.getElementById('mf-subject').value.trim();
+  const type    = document.getElementById('mf-type').value;
+  const url     = document.getElementById('mf-url').value.trim();
+  const desc    = document.getElementById('mf-desc').value.trim();
+  if (!title) { document.getElementById('mf-title').focus(); return; }
+  await fetch(`/api/classes/${currentClass}/materials`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({ title, subject, type, url, description: desc })
+  });
+  closeModal('mat-modal');
+  ['mf-title','mf-subject','mf-url','mf-desc'].forEach(id => document.getElementById(id).value = '');
+  loadMaterials();
+  showToast('เพิ่มสื่อเรียบร้อย ✓');
+}
+
+async function deleteMaterial(id, title) {
+  if (!confirm(`ลบ "${title}" ?`)) return;
+  await fetch(`/api/materials/${id}`, { method:'DELETE' });
+  loadMaterials();
+  showToast('ลบสื่อเรียบร้อย');
+}
+
+// ── Videos ────────────────────────────────────────────────────────────────────
+async function loadVideos() {
+  try {
+    const res  = await fetch(`/api/classes/${currentClass}/videos`);
+    const vids = await res.json();
+    document.getElementById('vid-grid').innerHTML = vids.length
+      ? vids.map(v => `
+          <div class="vid-card">
+            <iframe class="vid-thumb" src="${v.url}" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>
+            <div class="vid-body">
+              <div class="vid-title">${v.title}</div>
+              <div class="vid-meta">
+                ${v.duration ? `<span><i class="ti ti-clock" style="font-size:12px"></i> ${v.duration}</span>` : ''}
+              </div>
+              ${v.description ? `<div class="vid-desc">${v.description}</div>` : ''}
+            </div>
+            <div class="vid-footer">
+              <a href="${v.url.replace('/embed/','/watch?v=')}" target="_blank" class="btn btn-ghost btn-sm"><i class="ti ti-external-link"></i> YouTube</a>
+              <button class="btn btn-danger btn-sm" onclick="deleteVideo('${v.id}','${v.title.replace(/'/g,'&#39;')}')"><i class="ti ti-trash"></i></button>
+            </div>
+          </div>`)
+        .join('')
+      : '<div style="color:var(--hint);font-size:14px">ยังไม่มีวิดีโอ — กด "+ เพิ่มวิดีโอ" เพื่อเพิ่ม</div>';
+  } catch(e) {}
+}
+
+function openVidModal() { document.getElementById('vid-modal').classList.remove('hidden'); document.getElementById('vf-title').focus(); }
+
+async function submitVideo() {
+  const title = document.getElementById('vf-title').value.trim();
+  const url   = document.getElementById('vf-url').value.trim();
+  const dur   = document.getElementById('vf-dur').value.trim();
+  const desc  = document.getElementById('vf-desc').value.trim();
+  if (!title || !url) { document.getElementById(!title ? 'vf-title' : 'vf-url').focus(); return; }
+  await fetch(`/api/classes/${currentClass}/videos`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({ title, url, duration: dur, description: desc })
+  });
+  closeModal('vid-modal');
+  ['vf-title','vf-url','vf-dur','vf-desc'].forEach(id => document.getElementById(id).value = '');
+  loadVideos();
+  showToast('เพิ่มวิดีโอเรียบร้อย ✓');
+}
+
+async function deleteVideo(id, title) {
+  if (!confirm(`ลบ "${title}" ?`)) return;
+  await fetch(`/api/videos/${id}`, { method:'DELETE' });
+  loadVideos();
+  showToast('ลบวิดีโอเรียบร้อย');
+}
+
+// ── Grades ────────────────────────────────────────────────────────────────────
+async function loadGrades() {
+  try {
+    const [stuRes, taskRes] = await Promise.all([
+      fetch(`/api/classes/${currentClass}/students`),
+      fetch(`/api/classes/${currentClass}/tasks`)
+    ]);
+    const students = await stuRes.json();
+    const taskData = await taskRes.json();
+    const doneTasks = taskData.done || [];
+    const table = document.getElementById('grade-table');
+    if (!students.length) { table.innerHTML = '<tr><td style="padding:16px;color:var(--hint)">ยังไม่มีข้อมูลนักเรียน</td></tr>'; return; }
+    const scoreClass = s => s >= 80 ? 'score-hi' : s >= 70 ? 'score-md' : 'score-lo';
+    const seed = (sId, tId) => { let h = 0; for (const c of (sId + tId)) h = h * 31 + c.charCodeAt(0); return ((h % 41) + 60); };
+    table.innerHTML = `
+      <thead><tr>
+        <th style="text-align:left">นักเรียน</th>
+        ${doneTasks.map(t => `<th>${t.title.length > 14 ? t.title.slice(0,14)+'…' : t.title}</th>`).join('')}
+        <th>คะแนนรวม</th>
+      </tr></thead>
+      <tbody>
+        ${students.map(s => {
+          const scores = doneTasks.map(t => seed(s.id, t.id));
+          const avg = doneTasks.length ? Math.round(scores.reduce((a,b) => a+b, 0) / scores.length) : s.score;
+          return `<tr>
+            <td><div style="display:flex;align-items:center;gap:8px">
+              <div class="stu-av-sm ${s.avatarClass}">${s.initials}</div>${s.name}
+            </div></td>
+            ${scores.map(sc => `<td class="${scoreClass(sc)}">${sc}%</td>`).join('')}
+            <td class="${scoreClass(avg)}">${avg}%</td>
+          </tr>`;
+        }).join('')}
+      </tbody>`;
+  } catch(e) {}
+}
+
+// ── Schedule ──────────────────────────────────────────────────────────────────
+async function loadSchedule() {
+  try {
+    const res = await fetch('/api/timetable');
+    timetable = await res.json();
+    renderSchedule();
+  } catch(e) {}
+}
+
+function renderSchedule() {
+  if (!timetable.length) return;
+  const periods = timetable[0].periods;
+  const grid = document.getElementById('schedule-grid');
+  const clsMap = Object.fromEntries(classes.map(c => [c.id, c.name]));
+  let html = '<div class="sch-hd">ช่วงเวลา</div>' +
+    timetable.map(d => `<div class="sch-hd">${d.day}</div>`).join('');
+  for (let pi = 0; pi < periods.length; pi++) {
+    html += `<div class="sch-time">${timetable[0].periods[pi].time}</div>`;
+    for (let di = 0; di < timetable.length; di++) {
+      const p = timetable[di].periods[pi];
+      const filled = !!p.subject;
+      html += `<div class="sch-slot ${filled ? 'filled' : ''}" onclick="openSchModal(${di},${pi})">
+        ${filled
+          ? `<div class="slot-sub">${p.subject}</div>
+             ${p.room ? `<div class="slot-room">ห้อง ${p.room}</div>` : ''}
+             ${p.classId ? `<div class="slot-cls">${clsMap[p.classId] || p.classId}</div>` : ''}`
+          : `<div class="sch-empty">ว่าง</div>`}
+      </div>`;
+    }
+  }
+  grid.innerHTML = html;
+}
+
+function populateSchClassSelect() {
+  const sel = document.getElementById('schf-class');
+  sel.innerHTML = '<option value="">— ว่าง —</option>' +
+    classes.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+}
+
+function openSchModal(di, pi) {
+  document.getElementById('sch-day-idx').value    = di;
+  document.getElementById('sch-period-idx').value = pi;
+  const p = timetable[di].periods[pi];
+  document.getElementById('sch-modal-title').textContent = `แก้ไข — ${timetable[di].day} ${p.time}`;
+  document.getElementById('schf-subject').value = p.subject || '';
+  document.getElementById('schf-room').value    = p.room    || '';
+  document.getElementById('schf-class').value   = p.classId || '';
+  document.getElementById('sch-modal').classList.remove('hidden');
+  document.getElementById('schf-subject').focus();
+}
+
+async function saveSlot() {
+  const di = parseInt(document.getElementById('sch-day-idx').value);
+  const pi = parseInt(document.getElementById('sch-period-idx').value);
+  timetable[di].periods[pi].subject = document.getElementById('schf-subject').value.trim();
+  timetable[di].periods[pi].room    = document.getElementById('schf-room').value.trim();
+  timetable[di].periods[pi].classId = document.getElementById('schf-class').value;
+  await fetch('/api/timetable', { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(timetable) });
+  closeModal('sch-modal');
+  renderSchedule();
+  showToast('บันทึกตารางเรียนแล้ว ✓');
+}
+
+// ── Notifications ─────────────────────────────────────────────────────────────
+const NOTIF_COLORS = { warning:'#EF9F27', info:'#378ADD', success:'#5DCAA5' };
+
+async function loadNotifications() {
+  try {
+    const res   = await fetch('/api/notifications');
+    const notifs = await res.json();
+    const unread = notifs.filter(n => !n.read).length;
+    document.getElementById('unread-label').textContent = unread ? `${unread} รายการยังไม่อ่าน` : 'อ่านทั้งหมดแล้ว';
+    document.getElementById('notif-list').innerHTML = notifs.length
+      ? notifs.map(n => `
+          <div class="notif-item ${n.read ? '' : 'unread'}">
+            <div class="notif-dot" style="background:${NOTIF_COLORS[n.type] || '#ccc'}"></div>
+            <div class="notif-body">
+              <div class="notif-text">${n.text}</div>
+              <div class="notif-time">${formatTime(n.time)}</div>
+            </div>
+            <div class="notif-actions">
+              ${!n.read ? `<button class="btn btn-ghost btn-sm" onclick="markRead('${n.id}')">อ่านแล้ว</button>` : ''}
+              <button class="btn btn-danger btn-sm" onclick="deleteNotif('${n.id}')"><i class="ti ti-x"></i></button>
+            </div>
+          </div>`)
+        .join('')
+      : '<div style="color:var(--hint);font-size:14px;padding:16px 0">ไม่มีการแจ้งเตือน</div>';
+  } catch(e) {}
+}
+
+async function loadNotifBadge() {
+  try {
+    const res    = await fetch('/api/notifications');
+    const notifs = await res.json();
+    const unread = notifs.filter(n => !n.read).length;
+    const badge  = document.getElementById('notif-badge');
+    if (unread > 0) { badge.textContent = unread; badge.classList.remove('hidden'); }
+    else badge.classList.add('hidden');
+  } catch(e) {}
+}
+
+async function markRead(id) {
+  await fetch(`/api/notifications/${id}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ read: true }) });
+  loadNotifications(); loadNotifBadge();
+}
+
+async function markAllRead() {
+  const res    = await fetch('/api/notifications');
+  const notifs = await res.json();
+  await Promise.all(notifs.filter(n => !n.read).map(n =>
+    fetch(`/api/notifications/${n.id}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ read: true }) })
+  ));
+  loadNotifications(); loadNotifBadge();
+}
+
+async function deleteNotif(id) {
+  await fetch(`/api/notifications/${id}`, { method:'DELETE' });
+  loadNotifications(); loadNotifBadge();
+}
+
+function formatTime(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('th-TH', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+}
+
+// ── Students page ─────────────────────────────────────────────────────────────
+async function loadStudentsPage() {
+  try {
+    const res  = await fetch(`/api/classes/${currentClass}/students`);
+    const stus = await res.json();
+    const table = document.getElementById('stu-table');
+    const scl   = s => s.score >= 80 ? 'var(--teal)' : s.score >= 70 ? 'var(--amber)' : 'var(--red)';
+    table.innerHTML = `
+      <thead><tr>
+        <th style="width:40px">#</th>
+        <th>ชื่อ-นามสกุล</th>
+        <th>คะแนน</th>
+        <th style="width:80px">จัดการ</th>
+      </tr></thead>
+      <tbody>
+        ${stus.map((s, i) => `
+          <tr>
+            <td style="color:var(--hint)">${i+1}</td>
+            <td><div class="stu-row-name">
+              <div class="stu-av-sm ${s.avatarClass}">${s.initials}</div>
+              <span>${s.name}</span>
+            </div></td>
+            <td>
+              <div class="score-bar-wrap">
+                <div class="score-bar">
+                  <div class="score-bar-fill" style="width:${s.score}%;background:${scl(s)}"></div>
+                </div>
+                <span style="font-size:13px;font-weight:600;color:${scl(s)}">${s.score}%</span>
+              </div>
+            </td>
+            <td>
+              <button class="btn btn-danger btn-sm" onclick="deleteStudent('${s.id}','${s.name.replace(/'/g,'&#39;')}')">
+                <i class="ti ti-trash"></i></button>
+            </td>
+          </tr>`).join('')}
+      </tbody>`;
+    if (!stus.length) table.innerHTML = '<tr><td colspan="4" style="padding:16px;color:var(--hint)">ยังไม่มีข้อมูลนักเรียน</td></tr>';
+  } catch(e) {}
+}
+
+function openStuModal() { document.getElementById('stu-modal').classList.remove('hidden'); document.getElementById('sf-name').focus(); }
+
+async function submitStudent() {
+  const name  = document.getElementById('sf-name').value.trim();
+  const init  = document.getElementById('sf-init').value.trim();
+  const score = parseInt(document.getElementById('sf-score').value) || 70;
+  if (!name) { document.getElementById('sf-name').focus(); return; }
+  await fetch(`/api/classes/${currentClass}/students`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({ name, initials: init || name.slice(0,2), score })
+  });
+  closeModal('stu-modal');
+  ['sf-name','sf-init'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('sf-score').value = '70';
+  loadStudentsPage();
+  showToast('เพิ่มนักเรียนเรียบร้อย ✓');
+}
+
+async function deleteStudent(id, name) {
+  if (!confirm(`ลบ "${name}" ?`)) return;
+  await fetch(`/api/students/${id}`, { method:'DELETE' });
+  loadStudentsPage();
+  showToast('ลบนักเรียนเรียบร้อย');
+}
+
+// ── Settings ──────────────────────────────────────────────────────────────────
+async function loadSettings() {
+  try {
+    const res  = await fetch('/api/settings');
+    const cfg  = await res.json();
+    document.getElementById('set-teacher').value = cfg.teacherName || '';
+    document.getElementById('set-subject').value = cfg.subject     || '';
+    document.getElementById('set-school').value  = cfg.school      || '';
+    document.getElementById('set-level').value   = cfg.level       || '';
+  } catch(e) {}
+}
+
+async function saveSettings() {
+  const cfg = {
+    teacherName: document.getElementById('set-teacher').value.trim(),
+    subject:     document.getElementById('set-subject').value.trim(),
+    school:      document.getElementById('set-school').value.trim(),
+    level:       document.getElementById('set-level').value.trim(),
+  };
+  await fetch('/api/settings', { method:'PATCH', headers:{'Content-Type':'application/json'}, body:JSON.stringify(cfg) });
+  document.getElementById('sb-sub').textContent = `${cfg.teacherName} · ${cfg.level}`;
+  showToast('บันทึกการตั้งค่าแล้ว ✓');
+}
+
+// ── Shared modal helper ───────────────────────────────────────────────────────
+function closeModal(id, e) {
+  if (!e || e.target.id === id) document.getElementById(id).classList.add('hidden');
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── Keyboard ──────────────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    ['task-modal','mat-modal','vid-modal','stu-modal','sch-modal'].forEach(id =>
+      document.getElementById(id).classList.add('hidden'));
+  }
+  if ((e.metaKey || e.ctrlKey) && e.key === 'n' && currentPage === 'kanban') {
+    e.preventDefault(); openTaskModal();
+  }
+});
+
+init();
+</script>
+</body>
+</html>
